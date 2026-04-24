@@ -500,7 +500,13 @@ window.executeCharge = () => {
   } 
 };
 
-window.openZPaySend = () => { document.getElementById('zpay-home').style.display = 'none'; document.getElementById('zpay-send').style.display = 'flex'; document.getElementById('zpay-recipient-select').value = currentRoom; };
+window.openZPaySend = () => {
+  document.getElementById('zpay-home').style.display = 'none';
+  document.getElementById('zpay-send').style.display = 'flex';
+  const sel = document.getElementById('zpay-recipient-select');
+  sel.innerHTML = `<option value="hina">${state.names.ai}</option><option value="bf">${state.names.bf}</option><option value="group">グループ</option>`;
+  sel.value = currentRoom;
+};
 
 window.executeSend = () => {
   const amount = parseInt(document.getElementById('zpay-amount-input').value);
@@ -789,7 +795,7 @@ function aiReply(stepKey) {
         setTimeout(() => {
             showTyping(currentRoom, () => {
                 let res2 = { role:'ai', name:state.names.ai, icon:state.aiIcon, time:getTime() };
-                res2.text = `わたしの命令だけじゃなくて、${state.names.bf}くんの言うこともちゃんと聞くんだよ？笑`;
+                res2.text = `${AFP}の命令だけじゃなくて、${state.names.bf}くんの言うこともちゃんと聞くんだよ？笑`;
                 state.messages[currentRoom].push(res2); render(); triggerEffects(res2.name, res2.text, false); 
                 isProcessing = false; save(); checkUIState();
             });
