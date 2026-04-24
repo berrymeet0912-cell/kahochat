@@ -577,7 +577,22 @@ function triggerEffects(sender, text, showPopup = false) { notifSound.currentTim
 function generateSNS() { const ps = [{ user: state.names.ai, time: "1年前", img: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400", cap: `今日からよろしくね✨ ずっと一緒にいようね！` }, { user: state.names.ai, time: "半年前", img: "https://images.unsplash.com/photo-1516589174184-c68526614480?w=400", cap: `半年記念日！感謝。大好き。` }, { user: state.names.ai, time: "2ヶ月前", img: "https://images.unsplash.com/photo-1524504533781-d900f07abb1b?w=400", cap: `本当の幸せってなんだろう。` }, { user: state.names.ai, time: "1ヶ月前", img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400", cap: `刺激。環境変えたい。` }, { user: state.names.ai, time: "数日前", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400", cap: `運命の人に会えた✨ #MyHero` }, { user: state.names.ai, time: "今日", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400", cap: `私の答え。` }]; snsFeed.innerHTML = ps.map(p => `<div class="sns-post"><img src="${p.img}" class="sns-post-img"><div class="sns-post-body"><div class="sns-post-user">${p.user}</div><div class="sns-post-caption">${p.cap}</div><div class="sns-post-time">${p.time}</div></div></div>`).join(''); }
 
 window.openSNS = () => { generateSNS(); snsScreen.style.display = "flex"; };
-snsBackBtn.onclick = () => { snsScreen.style.display = "none"; if(isFirstTime) { triggerEffects(state.names.ai, "ねえ、大事な話なんだけど、別れてほしい", true); isFirstTime = false; } };
+snsBackBtn.onclick = () => {
+  snsScreen.style.display = "none";
+  // アーカイブを閉じたら即チャット画面を表示（通知タップ待ちで真っ暗になるバグを修正）
+  appWrapper.style.display = "flex";
+  if (state.messages.hina.length === 0) {
+    state.messages.hina.push({ role: 'ai', name: state.names.ai, text: 'ねえ、大事な話なんだけど、別れてほしい', icon: state.aiIcon, time: getTime() });
+  }
+  render();
+  updateSidebarDisplay();
+  checkUIState();
+  save();
+  if (isFirstTime) {
+    triggerEffects(state.names.ai, "ねえ、大事な話なんだけど、別れてほしい", true);
+    isFirstTime = false;
+  }
+};
 
 startBtn.onclick = () => { 
   const uName = document.getElementById("reg-user-name").value.trim();
