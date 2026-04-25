@@ -254,14 +254,14 @@
     <h2 class="setup-title">ログイン / 新規登録</h2>
     <div class="input-group">
       <label>ログインID (半角英数字)</label>
-      <input type="text" id="login-id" placeholder="例：user123" autocapitalize="off" autocorrect="off">
+      <input type="text" id="login-id" placeholder="例：user2024" autocapitalize="off" autocorrect="off">
     </div>
     <div class="input-group">
       <label>パスワード</label>
       <input type="password" id="login-pass" placeholder="パスワード">
     </div>
     <button id="login-btn" class="primary-btn">ログイン</button>
-    <p style="font-size: 11px; color: #888; margin-top: 15px; text-align: center;">※IDが存在しない場合は自動で新規作成されます</p>
+    <p style="font-size: 11px; color: #888; margin-top: 15px; text-align: center;">※IDが存在しない場合は自動で新規作成されます<br>※ID・パスワードは英字と数字を混ぜた8文字以上</p>
   </div>
 </div>
 
@@ -504,12 +504,21 @@ function setupFirebaseListeners() {
   });
 }
 
-// 修正済み：ログイン処理（大文字小文字の差異やデータ欠落への対応を追加）
+// 修正済み：ログイン処理（大文字小文字の差異やデータ欠落への対応＋セキュリティ要件の追加）
 document.getElementById('login-btn').onclick = async () => {
     // 小文字に統一して大文字・小文字の違いによる別アカウント化を防ぐ
     const lid = document.getElementById('login-id').value.trim().toLowerCase();
     const pass = document.getElementById('login-pass').value.trim();
     if(!lid || !pass) return showToast("IDとパスワードを入力してください", true);
+
+    // セキュリティ要件：英数字混在8文字以上
+    const isValidSecurity = (str) => {
+        return str.length >= 8 && /[a-zA-Z]/.test(str) && /[0-9]/.test(str);
+    };
+
+    if (!isValidSecurity(lid) || !isValidSecurity(pass)) {
+        return showToast("IDとパスワードは英字と数字を混ぜた8文字以上で入力してください", true);
+    }
 
     // Firebaseで使えない記号を弾く
     if(/[.#$\[\]]/.test(lid)) {
