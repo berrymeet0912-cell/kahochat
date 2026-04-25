@@ -254,7 +254,7 @@
     <h2 class="setup-title">ログイン / 新規登録</h2>
     <div class="input-group">
       <label>ログインID (半角英数字)</label>
-      <input type="text" id="login-id" placeholder="例：user123">
+      <input type="text" id="login-id" placeholder="例：user123" autocapitalize="off" autocorrect="off">
     </div>
     <div class="input-group">
       <label>パスワード</label>
@@ -504,9 +504,10 @@ function setupFirebaseListeners() {
   });
 }
 
-// 修正済み：ログイン処理（エラーハンドリングとローカルフォールバックを追加）
+// 修正済み：ログイン処理（大文字小文字の差異やデータ欠落への対応を追加）
 document.getElementById('login-btn').onclick = async () => {
-    const lid = document.getElementById('login-id').value.trim();
+    // 小文字に統一して大文字・小文字の違いによる別アカウント化を防ぐ
+    const lid = document.getElementById('login-id').value.trim().toLowerCase();
     const pass = document.getElementById('login-pass').value.trim();
     if(!lid || !pass) return showToast("IDとパスワードを入力してください", true);
 
@@ -537,7 +538,21 @@ document.getElementById('login-btn').onclick = async () => {
                 return showToast("パスワードが違います", true);
             }
             // ログイン成功
-            state = data.state;
+            // Firebaseの仕様で空配列やオブジェクトが欠損する場合があるため補完する
+            const loadedState = data.state || {};
+            state = {
+                ...state, // デフォルト値をベースにする
+                ...loadedState,
+                names: loadedState.names || { user: "", ai: "", bf: "" },
+                messages: {
+                    hina: (loadedState.messages && loadedState.messages.hina) ? loadedState.messages.hina : [],
+                    group: (loadedState.messages && loadedState.messages.group) ? loadedState.messages.group : [],
+                    bf: (loadedState.messages && loadedState.messages.bf) ? loadedState.messages.bf : []
+                },
+                unread: loadedState.unread || { hina: 0, group: 0, bf: 0 },
+                zpayHistory: loadedState.zpayHistory || [],
+                usedCodes: loadedState.usedCodes || []
+            };
             isFirstTime = false;
             loginScreen.style.display = 'none';
             // 初期設定チェック
@@ -563,7 +578,20 @@ document.getElementById('login-btn').onclick = async () => {
                 btn.innerText = originalText; btn.disabled = false;
                 return showToast("パスワードが違います", true);
             }
-            state = localData;
+            const loadedState = localData;
+            state = {
+                ...state,
+                ...loadedState,
+                names: loadedState.names || { user: "", ai: "", bf: "" },
+                messages: {
+                    hina: (loadedState.messages && loadedState.messages.hina) ? loadedState.messages.hina : [],
+                    group: (loadedState.messages && loadedState.messages.group) ? loadedState.messages.group : [],
+                    bf: (loadedState.messages && loadedState.messages.bf) ? loadedState.messages.bf : []
+                },
+                unread: loadedState.unread || { hina: 0, group: 0, bf: 0 },
+                zpayHistory: loadedState.zpayHistory || [],
+                usedCodes: loadedState.usedCodes || []
+            };
             isFirstTime = false;
             loginScreen.style.display = 'none';
             if(!state.names || !state.names.user || !state.names.ai) {
