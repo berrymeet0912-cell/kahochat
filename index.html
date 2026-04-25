@@ -625,6 +625,12 @@ window.startEpisode = (isRestart) => {
         state.zpayHistory = [{ type: 'charge', amount: 5000, desc: '初回登録ボーナス', date: getTime() }];
         state.tributePaid = 0;
         state.tributePaidGroup = 0;
+        
+        // 【追加】HINA-FRNCH-10000の使用済み履歴をリセットして何度でも再プレイ可能に
+        if (state.usedCodes) {
+            state.usedCodes = state.usedCodes.filter(code => code !== 'HINA-FRNCH-10000');
+        }
+
         currentRoom = 'hina';
         isFirstTime = true;
         save();
@@ -648,6 +654,7 @@ window.executeCharge = () => {
     showToast("このコードはすでに使用済みです", true); return;
   }
 
+  // HINA-FRNCH-10000はエピソード1攻略用のコードとして判定
   if(code === 'HINA-FRNCH-10000') { 
     state.zpayBalance += 10000; 
     state.zpayHistory.push({ type: 'charge', amount: 10000, desc: 'ギフトコード チャージ', date: getTime() }); 
