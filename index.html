@@ -347,6 +347,7 @@
     <div class="zpay-card">
       <p class="zpay-label">Total Balance</p>
       <h1 class="zpay-balance">¥<span id="zpay-balance-display">0</span></h1>
+      <p style="font-size: 10px; color: #888; margin-top: 8px; text-align: right;">※Z-Pay残高の有効期限は180日とする</p>
       <div class="zpay-card-chip"></div>
     </div>
     <div class="zpay-actions">
@@ -361,10 +362,13 @@
 
   <div id="zpay-charge" class="zpay-page" style="display: none;">
     <h2 class="zpay-page-title">ウォレットチャージ</h2>
-    <p class="zpay-sub-desc">専用のギフトコードを入力してください。</p>
+    <div style="background: rgba(255,255,255,0.05); border: 1px solid #333; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: left; font-size: 12px; color: #ccc; line-height: 1.5; width: 100%;">
+      <p style="margin-bottom: 10px;">「『エピソード1 進行用コード』を販売します！<br>※アプリ内で入力すると、演出としてZ-Pay残高が増え、物語が進みます」</p>
+      <p style="color: #ff6b6b; font-weight: bold; font-size: 11px;">【重要】Z-Pay残高の有効期限は180日とする。</p>
+    </div>
     <div class="zpay-input-wrap"><input type="text" id="zpay-code-input" placeholder="XXXX-XXXX-XXXX"></div>
     <button class="zpay-primary-btn" onclick="executeCharge()">チャージを実行</button>
-    <a href="#" class="zpay-link" onclick="showToast('noteの販売ページへ遷移します（モック）')">ギフトコードを購入する</a>
+    <a href="#" class="zpay-link" onclick="showToast('noteの販売ページへ遷移します（モック）')">進行用コードを購入する</a>
   </div>
 
   <div id="zpay-send" class="zpay-page" style="display: none;">
