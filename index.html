@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
@@ -15,245 +14,257 @@
     .history-amount.plus { color: #66fcf1; }
     .history-amount.minus { color: #ff6b6b; }
 
-```
-.notif-overlay { position: fixed; top: 0; width: 100%; height: 100%; z-index: 5000; display: flex; justify-content: center; padding-top: 20px; pointer-events: none; }
-.notif-banner { width: 90%; max-width: 400px; height: auto; min-height: 60px; background: #222; border-radius: 15px; padding: 15px; display: flex; flex-direction: row; align-items: flex-start; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); animation: slideDown 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28); pointer-events: auto; cursor: pointer; }
-.notif-icon { font-size: 24px; line-height: 1; }
-.notif-body { display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
-.notif-title { font-weight: bold; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.notif-text { font-size: 13px; color: #aaa; word-wrap: break-word; }
-@keyframes slideDown { from { transform: translateY(-150px); } to { transform: translateY(0); } }
+    .notif-overlay { position: fixed; top: 0; width: 100%; height: 100%; z-index: 5000; display: flex; justify-content: center; padding-top: 20px; pointer-events: none; }
+    .notif-banner { width: 90%; max-width: 400px; height: auto; min-height: 60px; background: #222; border-radius: 15px; padding: 15px; display: flex; flex-direction: row; align-items: flex-start; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); animation: slideDown 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28); pointer-events: auto; cursor: pointer; }
+    .notif-icon { font-size: 24px; line-height: 1; }
+    .notif-body { display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
+    .notif-title { font-weight: bold; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .notif-text { font-size: 13px; color: #aaa; word-wrap: break-word; }
+    @keyframes slideDown { from { transform: translateY(-150px); } to { transform: translateY(0); } }
 
-.zpay-recipient-wrap { background: #1f2833; padding: 15px 20px; border-radius: 12px; width: 100%; margin-bottom: 25px; border: 1px solid #333; display: flex; flex-direction: column; gap: 8px; }
-.zpay-recipient-label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
-.zpay-select { width: 100%; background: transparent; border: none; color: #66fcf1; font-size: 18px; font-weight: bold; outline: none; cursor: pointer; appearance: none; -webkit-appearance: none; }
-.zpay-select option { background: #111; color: white; }
+    .zpay-recipient-wrap { background: #1f2833; padding: 15px 20px; border-radius: 12px; width: 100%; margin-bottom: 25px; border: 1px solid #333; display: flex; flex-direction: column; gap: 8px; }
+    .zpay-recipient-label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+    .zpay-select { width: 100%; background: transparent; border: none; color: #66fcf1; font-size: 18px; font-weight: bold; outline: none; cursor: pointer; appearance: none; -webkit-appearance: none; }
+    .zpay-select option { background: #111; color: white; }
 
-.toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
-.toast { background: rgba(30, 30, 30, 0.95); color: white; padding: 12px 24px; border-radius: 30px; font-size: 14px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3); animation: toastFadeIn 0.3s, toastFadeOut 0.3s 2.7s forwards; backdrop-filter: blur(5px); border: 1px solid #444; text-align: center; }
-.toast.error { border-color: #ff3b30; color: #ff6b6b; }
-@keyframes toastFadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes toastFadeOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
+    .toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+    .toast { background: rgba(30, 30, 30, 0.95); color: white; padding: 12px 24px; border-radius: 30px; font-size: 14px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3); animation: toastFadeIn 0.3s, toastFadeOut 0.3s 2.7s forwards; backdrop-filter: blur(5px); border: 1px solid #444; text-align: center; }
+    .toast.error { border-color: #ff3b30; color: #ff6b6b; }
+    @keyframes toastFadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes toastFadeOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
 
-.zpay-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b0c10; z-index: 4000; display: flex; flex-direction: column; font-family: -apple-system, sans-serif; animation: slideUp 0.3s ease-out; color: white; }
-@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-.zpay-header { background: #1f2833; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
-.zpay-header-left { display: flex; align-items: center; gap: 10px; }
-.zpay-logo { font-weight: 900; font-size: 20px; color: #66fcf1; letter-spacing: 1px; font-style: italic; }
-.zpay-badge { background: #45a29e; color: #0b0c10; font-size: 9px; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
-.zpay-close { background: none; border: none; color: #c5c6c7; font-size: 24px; cursor: pointer; }
-.zpay-page { padding: 20px; flex: 1; display: flex; flex-direction: column; align-items: center; }
-.zpay-card { background: linear-gradient(135deg, #1f2833 0%, #111 100%); border-radius: 20px; width: 100%; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; overflow: hidden; margin-bottom: 25px; border: 1px solid #333; }
-.zpay-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(102,252,241,0.1) 0%, transparent 60%); pointer-events: none; }
-.zpay-label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-.zpay-balance { font-size: 40px; margin: 0; color: #fff; font-weight: 300; letter-spacing: 2px; }
-.zpay-card-chip { width: 40px; height: 30px; background: linear-gradient(135deg, #d4af37, #aa7700); border-radius: 5px; position: absolute; right: 25px; top: 30px; opacity: 0.8; }
-.zpay-actions { display: flex; gap: 20px; width: 100%; justify-content: center; margin-bottom: 30px; }
-.zpay-action-btn { display: flex; flex-direction: column; align-items: center; gap: 10px; color: #c5c6c7; font-size: 12px; cursor: pointer; flex: 1; }
-.zpay-icon { width: 55px; height: 55px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #0b0c10; font-weight: bold; }
-.charge-icon { background: #66fcf1; box-shadow: 0 4px 15px rgba(102,252,241,0.3); }
-.send-icon { background: #45a29e; box-shadow: 0 4px 15px rgba(69,162,158,0.3); }
-.history-icon { background: #1f2833; color: #66fcf1; border: 1px solid #333; }
-.zpay-barcode-area { background: #fff; border-radius: 15px; width: 100%; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-.barcode-hint { color: #333; font-size: 11px; font-weight: bold; }
-.fake-barcode { width: 90%; height: 70px; background: repeating-linear-gradient(90deg, #000, #000 3px, #fff 3px, #fff 6px, #000 6px, #000 8px, #fff 8px, #fff 12px); }
-.zpay-page-title { color: #fff; margin-bottom: 10px; font-size: 20px; font-weight: 300; }
-.zpay-sub-desc { color: #888; font-size: 12px; margin-bottom: 25px; }
-.zpay-input-wrap { width: 100%; background: #1f2833; border-radius: 12px; border: 1px solid #333; display: flex; align-items: center; padding: 12px 20px; margin-bottom: 30px; transition: 0.3s; }
-.zpay-input-wrap:focus-within { border-color: #66fcf1; box-shadow: 0 0 10px rgba(102,252,241,0.2); }
-#zpay-code-input { border: none; outline: none; width: 100%; font-size: 16px; color: white; background: transparent; letter-spacing: 2px; text-align: center; }
-.zpay-currency { font-size: 24px; color: #66fcf1; margin-right: 15px; }
-.zpay-amount { border: none; outline: none; width: 100%; font-size: 36px; font-weight: 300; color: white; background: transparent; }
-.zpay-primary-btn { background: linear-gradient(90deg, #45a29e, #66fcf1); color: #0b0c10; border: none; width: 100%; padding: 18px; border-radius: 30px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 20px rgba(102,252,241,0.4); }
-.zpay-link { margin-top: 25px; font-size: 13px; color: #45a29e; text-decoration: none; border-bottom: 1px solid #45a29e; padding-bottom: 2px; }
-.payment-bubble { background: #1f2833; color: #fff; border-radius: 16px; overflow: hidden; width: 220px; border: 1px solid #333; }
-.payment-header { background: #0b0c10; color: #66fcf1; padding: 12px; font-weight: bold; font-size: 11px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #222; }
-.payment-body { padding: 20px 15px; text-align: center; }
-.payment-amount { font-size: 24px; font-weight: 300; margin-bottom: 5px; color: #fff; }
-.payment-desc { font-size: 11px; color: #888; }
-.plus-btn { background: none; border: none; color: #aaa; font-size: 24px; cursor: pointer; padding: 0 5px; flex-shrink: 0; }
+    .zpay-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b0c10; z-index: 4000; display: flex; flex-direction: column; font-family: -apple-system, sans-serif; animation: slideUp 0.3s ease-out; color: white; }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    .zpay-header { background: #1f2833; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
+    .zpay-header-left { display: flex; align-items: center; gap: 10px; }
+    .zpay-logo { font-weight: 900; font-size: 20px; color: #66fcf1; letter-spacing: 1px; font-style: italic; }
+    .zpay-badge { background: #45a29e; color: #0b0c10; font-size: 9px; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+    .zpay-close { background: none; border: none; color: #c5c6c7; font-size: 24px; cursor: pointer; }
+    .zpay-page { padding: 20px; flex: 1; display: flex; flex-direction: column; align-items: center; }
+    .zpay-card { background: linear-gradient(135deg, #1f2833 0%, #111 100%); border-radius: 20px; width: 100%; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; overflow: hidden; margin-bottom: 25px; border: 1px solid #333; }
+    .zpay-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(102,252,241,0.1) 0%, transparent 60%); pointer-events: none; }
+    .zpay-label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+    .zpay-balance { font-size: 40px; margin: 0; color: #fff; font-weight: 300; letter-spacing: 2px; }
+    .zpay-card-chip { width: 40px; height: 30px; background: linear-gradient(135deg, #d4af37, #aa7700); border-radius: 5px; position: absolute; right: 25px; top: 30px; opacity: 0.8; }
+    .zpay-actions { display: flex; gap: 20px; width: 100%; justify-content: center; margin-bottom: 30px; }
+    .zpay-action-btn { display: flex; flex-direction: column; align-items: center; gap: 10px; color: #c5c6c7; font-size: 12px; cursor: pointer; flex: 1; }
+    .zpay-icon { width: 55px; height: 55px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #0b0c10; font-weight: bold; }
+    .charge-icon { background: #66fcf1; box-shadow: 0 4px 15px rgba(102,252,241,0.3); }
+    .send-icon { background: #45a29e; box-shadow: 0 4px 15px rgba(69,162,158,0.3); }
+    .history-icon { background: #1f2833; color: #66fcf1; border: 1px solid #333; }
+    .zpay-barcode-area { background: #fff; border-radius: 15px; width: 100%; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .barcode-hint { color: #333; font-size: 11px; font-weight: bold; }
+    .fake-barcode { width: 90%; height: 70px; background: repeating-linear-gradient(90deg, #000, #000 3px, #fff 3px, #fff 6px, #000 6px, #000 8px, #fff 8px, #fff 12px); }
+    .zpay-page-title { color: #fff; margin-bottom: 10px; font-size: 20px; font-weight: 300; }
+    .zpay-sub-desc { color: #888; font-size: 12px; margin-bottom: 25px; }
+    .zpay-input-wrap { width: 100%; background: #1f2833; border-radius: 12px; border: 1px solid #333; display: flex; align-items: center; padding: 12px 20px; margin-bottom: 30px; transition: 0.3s; }
+    .zpay-input-wrap:focus-within { border-color: #66fcf1; box-shadow: 0 0 10px rgba(102,252,241,0.2); }
+    #zpay-code-input { border: none; outline: none; width: 100%; font-size: 16px; color: white; background: transparent; letter-spacing: 2px; text-align: center; }
+    .zpay-currency { font-size: 24px; color: #66fcf1; margin-right: 15px; }
+    .zpay-amount { border: none; outline: none; width: 100%; font-size: 36px; font-weight: 300; color: white; background: transparent; }
+    .zpay-primary-btn { background: linear-gradient(90deg, #45a29e, #66fcf1); color: #0b0c10; border: none; width: 100%; padding: 18px; border-radius: 30px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 20px rgba(102,252,241,0.4); }
+    .zpay-link { margin-top: 25px; font-size: 13px; color: #45a29e; text-decoration: none; border-bottom: 1px solid #45a29e; padding-bottom: 2px; }
+    .payment-bubble { background: #1f2833; color: #fff; border-radius: 16px; overflow: hidden; width: 220px; border: 1px solid #333; }
+    .payment-header { background: #0b0c10; color: #66fcf1; padding: 12px; font-weight: bold; font-size: 11px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #222; }
+    .payment-body { padding: 20px 15px; text-align: center; }
+    .payment-amount { font-size: 24px; font-weight: 300; margin-bottom: 5px; color: #fff; }
+    .payment-desc { font-size: 11px; color: #888; }
+    .plus-btn { background: none; border: none; color: #aaa; font-size: 24px; cursor: pointer; padding: 0 5px; flex-shrink: 0; }
 
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-/* ===== モバイル送信ボタン修正: position:fixed を外し、dvh を使う ===== */
-body {
-  background: #000;
-  color: white;
-  font-family: -apple-system, sans-serif;
-  overflow: hidden;
-  height: 100dvh;
-  height: 100vh; /* fallback for older browsers */
-  width: 100vw;
-}
-/* ================================================================= */
+    /* ===== モバイル送信ボタン修正: position:fixed を外し、dvh を使う ===== */
+    body {
+      background: #000;
+      color: white;
+      font-family: -apple-system, sans-serif;
+      overflow: hidden;
+      height: 100dvh;
+      height: 100vh; /* fallback for older browsers */
+      width: 100vw;
+    }
+    /* ================================================================= */
 
-.setup-wrapper { display: flex; justify-content: center; align-items: center; height: 100dvh; height: 100vh; padding: 20px; }
-.setup-card { background: #1a1a1a; padding: 25px; border-radius: 20px; width: 100%; max-width: 360px; border: 1px solid #333; }
-.input-group { margin-bottom: 12px; display: flex; flex-direction: column; gap: 5px; }
-.input-group label { font-size: 11px; color: #888; }
-.input-group input { background: #2a2a2a; border: 1px solid #444; color: white; padding: 12px; border-radius: 10px; outline: none; }
-.photo-setup { display: flex; align-items: center; gap: 15px; background: #222; padding: 8px; border-radius: 12px; }
-.setup-preview-img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #8a2be2; }
-.mini-btn { background: #444; color: white; border: none; padding: 8px 12px; border-radius: 8px; font-size: 11px; cursor: pointer; }
-.primary-btn { width: 100%; padding: 14px; border: none; border-radius: 10px; background: #8a2be2; color: white; font-weight: bold; cursor: pointer; }
-.hidden { display: none !important; }
-.sns-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 500; overflow-y: auto; display: flex; flex-direction: column; }
-.sns-header { padding: 15px; font-weight: bold; text-align: center; border-bottom: 1px solid #222; position: sticky; top: 0; background: rgba(0,0,0,0.95); z-index: 10; display: flex; justify-content: center; align-items: center; }
-.sns-close-btn { position: absolute; right: 15px; background: none; border: none; color: white; font-size: 22px; cursor: pointer; padding: 5px; }
-.sns-feed { flex: 1; width: 100%; max-width: 500px; margin: 0 auto; padding: 10px 10px 40px 10px; }
-.sns-post { border-bottom: 1px solid #222; padding-bottom: 20px; margin-bottom: 20px; }
-.sns-post-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 4px; }
-.sns-post-body { padding: 10px 0; }
-.sns-post-user { font-weight: bold; font-size: 14px; margin-bottom: 5px; }
-.sns-post-caption { font-size: 13px; color: #ddd; line-height: 1.5; }
-.sns-post-time { font-size: 11px; color: #555; margin-top: 5px; }
+    .setup-wrapper { display: flex; justify-content: center; align-items: center; height: 100dvh; height: 100vh; padding: 20px; }
+    .setup-card { background: #1a1a1a; padding: 25px; border-radius: 20px; width: 100%; max-width: 360px; border: 1px solid #333; }
+    .input-group { margin-bottom: 12px; display: flex; flex-direction: column; gap: 5px; }
+    .input-group label { font-size: 11px; color: #888; }
+    .input-group input, .input-group select { background: #2a2a2a; border: 1px solid #444; color: white; padding: 12px; border-radius: 10px; outline: none; }
+    .photo-setup { display: flex; align-items: center; gap: 15px; background: #222; padding: 8px; border-radius: 12px; }
+    .setup-preview-img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #8a2be2; }
+    .mini-btn { background: #444; color: white; border: none; padding: 8px 12px; border-radius: 8px; font-size: 11px; cursor: pointer; }
+    .primary-btn { width: 100%; padding: 14px; border: none; border-radius: 10px; background: #8a2be2; color: white; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    .hidden { display: none !important; }
+    .sns-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 500; overflow-y: auto; display: flex; flex-direction: column; }
+    .sns-header { padding: 15px; font-weight: bold; text-align: center; border-bottom: 1px solid #222; position: sticky; top: 0; background: rgba(0,0,0,0.95); z-index: 10; display: flex; justify-content: center; align-items: center; }
+    .sns-close-btn { position: absolute; right: 15px; background: none; border: none; color: white; font-size: 22px; cursor: pointer; padding: 5px; }
+    .sns-feed { flex: 1; width: 100%; max-width: 500px; margin: 0 auto; padding: 10px 10px 40px 10px; }
+    .sns-post { border-bottom: 1px solid #222; padding-bottom: 20px; margin-bottom: 20px; }
+    .sns-post-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 4px; }
+    .sns-post-body { padding: 10px 0; }
+    .sns-post-user { font-weight: bold; font-size: 14px; margin-bottom: 5px; }
+    .sns-post-caption { font-size: 13px; color: #ddd; line-height: 1.5; }
+    .sns-post-time { font-size: 11px; color: #555; margin-top: 5px; }
 
-/* ===== アプリレイアウト修正 ===== */
-.app-wrapper {
-  display: flex;
-  justify-content: center;
-  height: 100dvh;
-  height: 100vh; /* fallback */
-  /* position: fixed を使わず、dvh でビューポートを正確に取得 */
-}
-.app-container {
-  display: flex;
-  width: 100%;
-  max-width: 600px;
-  background: #000;
-  border-left: 1px solid #222;
-  border-right: 1px solid #222;
-  overflow: hidden;
-  position: relative;
-  height: 100%;
-}
-/* ================================ */
+    /* ===== アプリレイアウト修正 ===== */
+    .app-wrapper {
+      display: flex;
+      justify-content: center;
+      height: 100dvh;
+      height: 100vh; /* fallback */
+    }
+    .app-container {
+      display: flex;
+      width: 100%;
+      max-width: 600px;
+      background: #000;
+      border-left: 1px solid #222;
+      border-right: 1px solid #222;
+      overflow: hidden;
+      position: relative;
+      height: 100%;
+    }
+    /* ================================ */
 
-.sidebar { width: 220px; background: #111; border-right: 1px solid #222; display: flex; flex-direction: column; flex-shrink: 0; }
-@media (max-width: 480px) { .sidebar { width: 75px; } .list-content, .sidebar-header, .sidebar-divider { display: none; } }
-.sidebar-header, .sidebar-divider { padding: 15px; font-size: 11px; color: #444; font-weight: bold; text-transform: uppercase; }
-.chat-item { display: flex; padding: 12px; gap: 10px; cursor: pointer; align-items: center; opacity: 0.4; position: relative; }
-.chat-item.active { background: #1a1a1a; opacity: 1; border-left: 3px solid #8a2be2; }
-.list-icon { width: 44px; height: 44px; border-radius: 14px; object-fit: cover; flex-shrink: 0; cursor: pointer; }
+    .sidebar { width: 220px; background: #111; border-right: 1px solid #222; display: flex; flex-direction: column; flex-shrink: 0; }
+    @media (max-width: 480px) { .sidebar { width: 75px; } .list-content, .sidebar-header, .sidebar-divider { display: none; } }
+    .sidebar-header, .sidebar-divider { padding: 15px; font-size: 11px; color: #444; font-weight: bold; text-transform: uppercase; }
+    .chat-item { display: flex; padding: 12px; gap: 10px; cursor: pointer; align-items: center; opacity: 0.4; position: relative; }
+    .chat-item.active { background: #1a1a1a; opacity: 1; border-left: 3px solid #8a2be2; }
+    .list-icon { width: 44px; height: 44px; border-radius: 14px; object-fit: cover; flex-shrink: 0; cursor: pointer; }
 
-/* ===== メインコンテンツ・チャットボックス修正 ===== */
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background: #0c0c0c;
-  position: relative;
-  overflow: hidden;
-  height: 100%;
-  min-height: 0; /* flexの縮み許可 */
-}
-.chat-box {
-  flex: 1;
-  padding: 15px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  -webkit-overflow-scrolling: touch;
-  min-height: 0; /* 必須: flex子要素がオーバーフローできるように */
-}
-/* ================================================= */
+    /* ===== メインコンテンツ・チャットボックス修正 ===== */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #0c0c0c;
+      position: relative;
+      overflow: hidden;
+      height: 100%;
+      min-height: 0; 
+    }
+    .chat-box {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      -webkit-overflow-scrolling: touch;
+      min-height: 0;
+    }
+    /* ================================================= */
 
-.typing { display: flex; gap: 4px; padding: 12px; background: #222; border-radius: 18px; width: fit-content; margin-left: 40px; margin-bottom: 10px; }
-.dot { width: 6px; height: 6px; background: #888; border-radius: 50%; animation: blink 1.4s infinite both; }
-.dot:nth-child(2) { animation-delay: 0.2s; } .dot:nth-child(3) { animation-delay: 0.4s; }
-@keyframes blink { 0%, 80%, 100% { opacity: 0; } 40% { opacity: 1; } }
-.message-wrapper { display: flex; gap: 8px; width: 100%; align-items: flex-end; }
-.ai-wrapper { justify-content: flex-start; }
-.user-wrapper { justify-content: flex-end; }
-.message { padding: 10px 14px; border-radius: 18px; font-size: 14px; max-width: 75%; line-height: 1.4; word-wrap: break-word; }
-.ai-message { background: #6a1b9a; border-top-left-radius: 2px; }
-.user-message { background: #333; border-top-right-radius: 2px; }
-.bf-message { background: #0d47a1; border-top-left-radius: 2px; }
-.chat-icon { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; flex-shrink: 0; cursor: pointer; }
-.meta-info { font-size: 9px; color: #444; display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
-.read-mark { color: #8a2be2; font-weight: bold; }
-.join-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #0c0c0c; z-index: 100; display: flex; justify-content: center; align-items: center; padding: 20px; text-align: center; }
-.join-card { background: #1a1a1a; padding: 30px; border-radius: 20px; border: 1px solid #333; width: 100%; max-width: 300px; }
-.group-icon-large { font-size: 50px; margin-bottom: 15px; }
-.choice-area { padding: 15px; background: #111; display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #222; flex-shrink: 0; }
-.choice-btn { background: #333; border: 1px solid #8a2be2; color: white; padding: 12px; border-radius: 10px; text-align: center; cursor: pointer; }
+    .typing { display: flex; gap: 4px; padding: 12px; background: #222; border-radius: 18px; width: fit-content; margin-left: 40px; margin-bottom: 10px; }
+    .dot { width: 6px; height: 6px; background: #888; border-radius: 50%; animation: blink 1.4s infinite both; }
+    .dot:nth-child(2) { animation-delay: 0.2s; } .dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes blink { 0%, 80%, 100% { opacity: 0; } 40% { opacity: 1; } }
+    .message-wrapper { display: flex; gap: 8px; width: 100%; align-items: flex-end; }
+    .ai-wrapper { justify-content: flex-start; }
+    .user-wrapper { justify-content: flex-end; }
+    .message { padding: 10px 14px; border-radius: 18px; font-size: 14px; max-width: 75%; line-height: 1.4; word-wrap: break-word; }
+    .ai-message { background: #6a1b9a; border-top-left-radius: 2px; }
+    .user-message { background: #333; border-top-right-radius: 2px; }
+    .bf-message { background: #0d47a1; border-top-left-radius: 2px; }
+    .chat-icon { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; flex-shrink: 0; cursor: pointer; }
+    .meta-info { font-size: 9px; color: #444; display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+    .read-mark { color: #8a2be2; font-weight: bold; }
+    .join-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #0c0c0c; z-index: 100; display: flex; justify-content: center; align-items: center; padding: 20px; text-align: center; }
+    .join-card { background: #1a1a1a; padding: 30px; border-radius: 20px; border: 1px solid #333; width: 100%; max-width: 300px; }
+    .group-icon-large { font-size: 50px; margin-bottom: 15px; }
+    .choice-area { padding: 15px; background: #111; display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #222; flex-shrink: 0; }
+    .choice-btn { background: #333; border: 1px solid #8a2be2; color: white; padding: 12px; border-radius: 10px; text-align: center; cursor: pointer; }
 
-/* ===== 送信エリア修正: スマホでボタンが見えない問題を解消 ===== */
-.input-area {
-  padding: 10px 12px;
-  padding-bottom: max(10px, env(safe-area-inset-bottom)); /* iPhoneのホームバー対策 */
-  display: flex;
-  gap: 8px;
-  background: #111;
-  border-top: 1px solid #222;
-  flex-shrink: 0;
-  align-items: center;
-  width: 100%;
-}
-#message-input {
-  flex: 1;
-  min-width: 0; /* flexで縮む許可 */
-  background: #222;
-  border: none;
-  color: white;
-  padding: 12px;
-  border-radius: 20px;
-  outline: none;
-  font-size: 16px; /* iOSのズームイン防止 */
-}
-#send-btn {
-  background: #6a1b9a;
-  border: none;
-  color: white;
-  padding: 0 18px;
-  border-radius: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  height: 44px;        /* height:100% の代わりに明示的な高さ */
-  min-height: 44px;    /* タッチターゲット確保 */
-  flex-shrink: 0;      /* 縮まないようにする */
-  white-space: nowrap; /* テキストが折り返さないように */
-  font-size: 14px;
-}
-/* ========================================================== */
+    /* ===== 送信エリア修正 ===== */
+    .input-area {
+      padding: 10px 12px;
+      padding-bottom: max(10px, env(safe-area-inset-bottom));
+      display: flex;
+      gap: 8px;
+      background: #111;
+      border-top: 1px solid #222;
+      flex-shrink: 0;
+      align-items: center;
+      width: 100%;
+    }
+    #message-input {
+      flex: 1;
+      min-width: 0; 
+      background: #222;
+      border: none;
+      color: white;
+      padding: 12px;
+      border-radius: 20px;
+      outline: none;
+      font-size: 16px;
+    }
+    #send-btn {
+      background: #6a1b9a;
+      border: none;
+      color: white;
+      padding: 0 18px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      height: 44px;        
+      min-height: 44px;    
+      flex-shrink: 0;      
+      white-space: nowrap; 
+      font-size: 14px;
+    }
+    /* ========================================================== */
 
-.chat-header { padding: 12px 15px; background: #111; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; z-index: 10; }
-.chat-header-btn { background: none; border: none; color: #aaa; font-size: 18px; cursor: pointer; }
-.call-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #111; z-index: 3000; display: flex; flex-direction: column; align-items: center; padding-top: 80px; }
-.call-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, #333 0%, #000 100%); z-index: -1; }
-.call-avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; border: 2px solid #555; }
-.call-name { font-size: 24px; font-weight: bold; margin-bottom: 10px; z-index: 1; }
-.call-status { font-size: 16px; color: #aaa; margin-bottom: 40px; z-index: 1; }
-.call-subtitles { font-size: 16px; color: white; text-align: center; padding: 0 30px; height: 80px; line-height: 1.5; font-weight: bold; z-index: 1; }
-.end-call-btn { margin-top: auto; margin-bottom: 60px; width: 70px; height: 70px; border-radius: 50%; background: #ff3b30; color: white; display: flex; align-items: center; justify-content: center; font-size: 30px; border: none; cursor: pointer; z-index: 1; transform: rotate(135deg); }
-.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2500; display: flex; justify-content: center; align-items: center; }
-.modal-card { background: #1a1a1a; width: 90%; max-width: 300px; border-radius: 15px; padding: 20px; border: 1px solid #333; }
-.modal-title { font-size: 16px; font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-.member-list { display: flex; flex-direction: column; gap: 12px; }
-.member-item { display: flex; align-items: center; gap: 10px; }
-.member-icon { width: 40px; height: 40px; border-radius: 12px; object-fit: cover; cursor: pointer; }
-.member-name { font-size: 14px; font-weight: bold; }
-.profile-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; background: #222; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; color: white; }
-.profile-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; filter: brightness(0.5) blur(10px); z-index: -1; }
-.profile-close { position: absolute; top: 20px; left: 20px; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
-.profile-content { width: 100%; display: flex; flex-direction: column; align-items: center; padding-bottom: 80px; }
-.profile-avatar { width: 100px; height: 100px; border-radius: 40px; object-fit: cover; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.2); }
-.profile-name { font-size: 20px; font-weight: bold; margin-bottom: 8px; }
-.profile-status { font-size: 13px; color: #ccc; margin-bottom: 40px; text-align: center; padding: 0 40px; }
-.profile-actions { display: flex; gap: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; width: 100%; justify-content: center; }
-.action-item { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 11px; cursor: pointer; opacity: 0.8; transition: opacity 0.2s; }
-.action-item:hover { opacity: 1; }
-.action-icon { width: 45px; height: 45px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    .chat-header { padding: 12px 15px; background: #111; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; z-index: 10; }
+    .chat-header-btn { background: none; border: none; color: #aaa; font-size: 18px; cursor: pointer; }
+    .call-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #111; z-index: 3000; display: flex; flex-direction: column; align-items: center; padding-top: 80px; }
+    .call-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, #333 0%, #000 100%); z-index: -1; }
+    .call-avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; border: 2px solid #555; }
+    .call-name { font-size: 24px; font-weight: bold; margin-bottom: 10px; z-index: 1; }
+    .call-status { font-size: 16px; color: #aaa; margin-bottom: 40px; z-index: 1; }
+    .call-subtitles { font-size: 16px; color: white; text-align: center; padding: 0 30px; height: 80px; line-height: 1.5; font-weight: bold; z-index: 1; }
+    .end-call-btn { margin-top: auto; margin-bottom: 60px; width: 70px; height: 70px; border-radius: 50%; background: #ff3b30; color: white; display: flex; align-items: center; justify-content: center; font-size: 30px; border: none; cursor: pointer; z-index: 1; transform: rotate(135deg); }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2500; display: flex; justify-content: center; align-items: center; }
+    .modal-card { background: #1a1a1a; width: 90%; max-width: 300px; border-radius: 15px; padding: 20px; border: 1px solid #333; }
+    .modal-title { font-size: 16px; font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+    .member-list { display: flex; flex-direction: column; gap: 12px; }
+    .member-item { display: flex; align-items: center; gap: 10px; }
+    .member-icon { width: 40px; height: 40px; border-radius: 12px; object-fit: cover; cursor: pointer; }
+    .member-name { font-size: 14px; font-weight: bold; }
+    .profile-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; background: #222; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; color: white; }
+    .profile-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; filter: brightness(0.5) blur(10px); z-index: -1; }
+    .profile-close { position: absolute; top: 20px; left: 20px; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+    .profile-content { width: 100%; display: flex; flex-direction: column; align-items: center; padding-bottom: 80px; }
+    .profile-avatar { width: 100px; height: 100px; border-radius: 40px; object-fit: cover; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.2); }
+    .profile-name { font-size: 20px; font-weight: bold; margin-bottom: 8px; }
+    .profile-status { font-size: 13px; color: #ccc; margin-bottom: 40px; text-align: center; padding: 0 40px; }
+    .profile-actions { display: flex; gap: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; width: 100%; justify-content: center; }
+    .action-item { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 11px; cursor: pointer; opacity: 0.8; transition: opacity 0.2s; }
+    .action-item:hover { opacity: 1; }
+    .action-icon { width: 45px; height: 45px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; }
 
-.badge { position: absolute; top: -5px; right: -5px; background: #ff3b30 !important; color: white !important; font-size: 11px; font-weight: bold; border-radius: 50px; min-width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; padding: 0 4px; border: 2px solid #111; z-index: 10; box-shadow: 0 2px 4px rgba(255, 59, 48, 0.4); }
-```
-
+    .badge { position: absolute; top: -5px; right: -5px; background: #ff3b30 !important; color: white !important; font-size: 11px; font-weight: bold; border-radius: 50px; min-width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; padding: 0 4px; border: 2px solid #111; z-index: 10; box-shadow: 0 2px 4px rgba(255, 59, 48, 0.4); }
   </style>
 </head>
 <body>
 
-<div id="setup-screen" class="setup-wrapper">
+<div id="login-screen" class="setup-wrapper">
+  <div class="setup-card">
+    <h2 class="setup-title">ログイン / 新規登録</h2>
+    <div class="input-group">
+      <label>ログインID (半角英数字)</label>
+      <input type="text" id="login-id" placeholder="例：user123">
+    </div>
+    <div class="input-group">
+      <label>パスワード</label>
+      <input type="password" id="login-pass" placeholder="パスワード">
+    </div>
+    <button id="login-btn" class="primary-btn">ログイン</button>
+    <p style="font-size: 11px; color: #888; margin-top: 15px; text-align: center;">※IDが存在しない場合は自動で新規作成されます</p>
+  </div>
+</div>
+
+<div id="setup-screen" class="setup-wrapper" style="display: none;">
   <div class="setup-card">
     <h2 class="setup-title">初期設定</h2>
     <div class="setup-form">
@@ -261,30 +272,49 @@ body {
       <div class="input-group"><label>彼女のアイコン</label><div class="photo-setup"><img id="setup-ai-preview" src="https://general-lavender-ybn0qbsyua.edgeone.app/IMG_1951.jpeg" class="setup-preview-img"><input type="file" id="reg-ai-icon" accept="image/*" style="display:none"><button type="button" class="mini-btn" onclick="document.getElementById('reg-ai-icon').click()">写真を選ぶ</button></div></div>
       <div class="input-group"><label>自分の名前</label><input type="text" id="reg-user-name" placeholder="例：ともや"></div>
 
-```
-  <div class="input-group"><label>あなたの一人称</label>
-    <select id="reg-user-fp">
-      <option value="僕">僕</option>
-      <option value="俺">俺</option>
-    </select>
-  </div>
+      <div class="input-group"><label>あなたの一人称</label>
+        <select id="reg-user-fp">
+          <option value="僕">僕</option>
+          <option value="俺">俺</option>
+        </select>
+      </div>
 
-  <div class="input-group"><label>彼女の名前</label><input type="text" id="reg-ai-name" placeholder="例：果歩"></div>
-  
-  <div class="input-group"><label>彼女の一人称</label>
-    <select id="reg-ai-fp">
-      <option value="name">彼女の名前（例：果歩は〜）</option>
-      <option value="私">私</option>
-      <option value="うち">うち</option>
-      <option value="あたし">あたし</option>
-    </select>
-  </div>
+      <div class="input-group"><label>彼女の名前</label><input type="text" id="reg-ai-name" placeholder="例：果歩"></div>
+      
+      <div class="input-group"><label>彼女の一人称</label>
+        <select id="reg-ai-fp">
+          <option value="name">彼女の名前（例：果歩は〜）</option>
+          <option value="私">私</option>
+          <option value="うち">うち</option>
+          <option value="あたし">あたし</option>
+        </select>
+      </div>
 
-  <div class="input-group"><label>彼氏の名前</label><input type="text" id="reg-bf-name" placeholder="例：大輔"></div>
-  <button id="start-btn" class="primary-btn">物語を開始する</button>
+      <div class="input-group"><label>彼氏の名前</label><input type="text" id="reg-bf-name" placeholder="例：大輔"></div>
+      <button id="start-btn" class="primary-btn">物語を開始する</button>
+    </div>
+  </div>
 </div>
-```
 
+<div id="episode-screen" class="setup-wrapper" style="display: none;">
+  <div class="setup-card">
+    <h2 class="setup-title">エピソード選択</h2>
+    <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+      <button class="primary-btn" onclick="selectEpisode(1)">エピソード1: 地獄の始まり</button>
+      <button class="primary-btn" style="background: #333; color: #888; cursor: not-allowed;" disabled>エピソード2: 〇〇〇 (近日公開)</button>
+      <button class="primary-btn" style="background: #333; color: #888; cursor: not-allowed;" disabled>エピソード3: 〇〇〇 (近日公開)</button>
+    </div>
+  </div>
+</div>
+
+<div id="play-mode-modal" class="modal-overlay" style="display: none;">
+  <div class="modal-card">
+    <h3 class="modal-title">エピソード1: 地獄の始まり</h3>
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+      <button class="primary-btn" style="background: #e63946;" onclick="startEpisode(true)">最初から開始する</button>
+      <button class="primary-btn" onclick="startEpisode(false)">前回の続きから</button>
+      <button class="primary-btn" style="background: #444;" onclick="closePlayModeModal()">キャンセル</button>
+    </div>
   </div>
 </div>
 
@@ -380,21 +410,19 @@ body {
       </div>
     </div>
 
-```
-<div class="main-content">
-  <div class="chat-header" id="chat-header"><span id="chat-header-title"></span><button id="chat-header-btn" class="chat-header-btn" style="display:none;" onclick="openMembers()">👥</button></div>
-  <div class="chat-box" id="chat-display"></div>
-  <div id="join-screen" class="join-wrapper" style="display: none;"><div class="join-card"><div class="group-icon-large">👥</div><h3>招待されました</h3><p id="join-desc"></p><button class="primary-btn" onclick="joinGroup()">参加する</button></div></div>
-  
-  <div id="choice-area" class="choice-area" style="display: none;"></div>
-  
-  <div class="input-area" id="standard-input">
-    <button id="plus-btn" class="plus-btn" onclick="openZPay()">＋</button>
-    <input type="text" id="message-input" placeholder="メッセージ...">
-    <button id="send-btn">送信</button>
-  </div>
-</div>
-```
+    <div class="main-content">
+      <div class="chat-header" id="chat-header"><span id="chat-header-title"></span><button id="chat-header-btn" class="chat-header-btn" style="display:none;" onclick="openMembers()">👥</button></div>
+      <div class="chat-box" id="chat-display"></div>
+      <div id="join-screen" class="join-wrapper" style="display: none;"><div class="join-card"><div class="group-icon-large">👥</div><h3>招待されました</h3><p id="join-desc"></p><button class="primary-btn" onclick="joinGroup()">参加する</button></div></div>
+      
+      <div id="choice-area" class="choice-area" style="display: none;"></div>
+      
+      <div class="input-area" id="standard-input">
+        <button id="plus-btn" class="plus-btn" onclick="openZPay()">＋</button>
+        <input type="text" id="message-input" placeholder="メッセージ...">
+        <button id="send-btn">送信</button>
+      </div>
+    </div>
 
   </div>
 </div>
@@ -404,9 +432,7 @@ body {
 <audio id="call-end-sound" src="https://assets.mixkit.co/active_storage/sfx/2382/2382-preview.mp3" preload="auto"></audio>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
@@ -422,7 +448,8 @@ const firebaseConfig = {
 if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
 const db = firebase.database();
 
-const setupScreen = document.getElementById("setup-screen"), snsScreen = document.getElementById("sns-screen"), snsFeed = document.getElementById("sns-feed"), snsBackBtn = document.getElementById("sns-back-btn"), notifOverlay = document.getElementById("notif-overlay"), appWrapper = document.getElementById("app-wrapper"), startBtn = document.getElementById("start-btn"), chatDisplay = document.getElementById("chat-display"), sendBtn = document.getElementById("send-btn"), input = document.getElementById("message-input"), standardInput = document.getElementById("standard-input"), choiceArea = document.getElementById("choice-area"), profileScreen = document.getElementById("profile-screen"), profileTalkBtn = document.getElementById("profile-talk-btn"), profileCallBtn = document.getElementById("profile-call-btn"), joinScreen = document.getElementById("join-screen"), joinDesc = document.getElementById("join-desc");
+const loginScreen = document.getElementById("login-screen"), setupScreen = document.getElementById("setup-screen"), episodeScreen = document.getElementById("episode-screen"), playModeModal = document.getElementById("play-mode-modal");
+const snsScreen = document.getElementById("sns-screen"), snsFeed = document.getElementById("sns-feed"), snsBackBtn = document.getElementById("sns-back-btn"), notifOverlay = document.getElementById("notif-overlay"), appWrapper = document.getElementById("app-wrapper"), startBtn = document.getElementById("start-btn"), chatDisplay = document.getElementById("chat-display"), sendBtn = document.getElementById("send-btn"), input = document.getElementById("message-input"), standardInput = document.getElementById("standard-input"), choiceArea = document.getElementById("choice-area"), profileScreen = document.getElementById("profile-screen"), profileTalkBtn = document.getElementById("profile-talk-btn"), profileCallBtn = document.getElementById("profile-call-btn"), joinScreen = document.getElementById("join-screen"), joinDesc = document.getElementById("join-desc");
 const regUserIcon = document.getElementById("reg-user-icon"), setupUserPreview = document.getElementById("setup-user-preview"), regAiIcon = document.getElementById("reg-ai-icon"), setupAiPreview = document.getElementById("setup-ai-preview");
 const defaultAiIcon = "https://general-lavender-ybn0qbsyua.edgeone.app/IMG_1951.jpeg", defaultUserIcon = "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=100", bfIcon = "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100";
 const notifSound = document.getElementById("notif-sound"), callRingSound = document.getElementById("call-ring-sound"), callEndSound = document.getElementById("call-end-sound");
@@ -434,7 +461,8 @@ function generateSessionId() {
   return 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
 }
 
-let state = { sessionId: generateSessionId(), names: { user: "", ai: "", bf: "" }, firstPerson: "僕", aiFirstPerson: "私", userIcon: defaultUserIcon, aiIcon: defaultAiIcon, storyStep: 0, messages: { hina: [], group: [], bf: [] }, unread: { hina: 0, group: 0, bf: 0 }, isInvited: false, isJoined: false, isBfUnlocked: false, zpayBalance: 5000, zpayHistory: [], tributePaid: 0, usedCodes: [] };
+// stateにloginIdとpasswordを追加
+let state = { loginId: "", password: "", sessionId: generateSessionId(), names: { user: "", ai: "", bf: "" }, firstPerson: "僕", aiFirstPerson: "私", userIcon: defaultUserIcon, aiIcon: defaultAiIcon, storyStep: 0, messages: { hina: [], group: [], bf: [] }, unread: { hina: 0, group: 0, bf: 0 }, isInvited: false, isJoined: false, isBfUnlocked: false, zpayBalance: 5000, zpayHistory: [], tributePaid: 0, usedCodes: [] };
 
 let isAutoMode = true;
 
@@ -474,6 +502,79 @@ function setupFirebaseListeners() {
     }
   });
 }
+
+// ログイン処理
+document.getElementById('login-btn').onclick = () => {
+    const lid = document.getElementById('login-id').value.trim();
+    const pass = document.getElementById('login-pass').value.trim();
+    if(!lid || !pass) return showToast("IDとパスワードを入力してください", true);
+
+    db.ref('users_data/' + lid).once('value', (snap) => {
+        const data = snap.val();
+        if(data) {
+            if(data.password !== pass) {
+                return showToast("パスワードが違います", true);
+            }
+            // ログイン成功
+            state = data.state;
+            isFirstTime = false;
+            loginScreen.style.display = 'none';
+            // 初期設定が終わっているか確認
+            if(!state.names.user || !state.names.ai) {
+                setupScreen.style.display = 'flex';
+            } else {
+                episodeScreen.style.display = 'flex';
+            }
+        } else {
+            // 新規作成
+            state.loginId = lid;
+            state.password = pass;
+            loginScreen.style.display = 'none';
+            setupScreen.style.display = 'flex';
+        }
+        save();
+        setupFirebaseListeners();
+    });
+};
+
+// エピソード選択処理
+window.selectEpisode = (epNum) => {
+    if(epNum === 1) {
+        if(state.messages.hina.length > 0) {
+            playModeModal.style.display = 'flex'; // 進行中のデータがあればモーダル表示
+        } else {
+            startEpisode(true); // なければ最初から
+        }
+    }
+};
+
+window.closePlayModeModal = () => {
+    playModeModal.style.display = 'none';
+};
+
+window.startEpisode = (isRestart) => {
+    playModeModal.style.display = 'none';
+    episodeScreen.style.display = 'none';
+
+    if(isRestart) {
+        state.storyStep = 0;
+        state.messages = { hina: [], group: [], bf: [] };
+        state.unread = { hina: 0, group: 0, bf: 0 };
+        state.isInvited = false;
+        state.isJoined = false;
+        state.isBfUnlocked = false;
+        state.zpayBalance = 5000;
+        state.zpayHistory = [{ type: 'charge', amount: 5000, desc: '初回登録ボーナス', date: getTime() }];
+        state.tributePaid = 0;
+        currentRoom = 'hina';
+        isFirstTime = true;
+        save();
+    } else {
+        isFirstTime = false;
+    }
+
+    openSNS(); // アーカイブから開始
+};
 
 window.openZPayHistory = () => { document.getElementById('zpay-home').style.display = 'none'; document.getElementById('zpay-history').style.display = 'flex'; const list = document.getElementById('zpay-history-list'); if(state.zpayHistory.length === 0) { list.innerHTML = `<p style="text-align:center; color:#888; margin-top:20px;">取引履歴がありません</p>`; return; } list.innerHTML = state.zpayHistory.slice().reverse().map(h => `<div class="history-item"><div class="history-info"><span class="history-title">${h.desc}</span><span class="history-date">${h.date}</span></div><span class="history-amount ${h.type === 'charge' ? 'plus' : 'minus'}">${h.type === 'charge' ? '+' : '-'}¥${h.amount.toLocaleString()}</span></div>`).join(''); };
 window.openZPay = () => { document.getElementById('zpay-balance-display').innerText = state.zpayBalance.toLocaleString(); document.getElementById('zpay-home').style.display = 'flex'; document.getElementById('zpay-charge').style.display = 'none'; document.getElementById('zpay-send').style.display = 'none'; document.getElementById('zpay-history').style.display = 'none'; document.getElementById('zpay-screen').style.display = 'flex'; };
@@ -563,19 +664,25 @@ regUserIcon.onchange = (e) => { const f = e.target.files[0]; if (f) { const r = 
 regAiIcon.onchange = (e) => { const f = e.target.files[0]; if (f) { const r = new FileReader(); r.onload = (ev) => { state.aiIcon = ev.target.result; setupAiPreview.src = ev.target.result; }; r.readAsDataURL(f); } };
 
 async function save() { 
-  try { await localforage.setItem('hinaChat_WebRelease_v1', state); } catch (err) { console.error('保存エラー:', err); }
+  try { 
+    await localforage.setItem('hinaChat_WebRelease_v1', state); 
+    if(state.loginId) {
+        db.ref('users_data/' + state.loginId).set({
+            password: state.password,
+            state: state
+        });
+    }
+  } catch (err) { console.error('保存エラー:', err); }
 }
 
-async function load() { 
+async function initLoad() { 
   try {
     const d = await localforage.getItem('hinaChat_WebRelease_v1'); 
     if(d) { 
-        state = d; 
-        if (!state.sessionId) { state.sessionId = generateSessionId(); save(); }
-        isFirstTime = false; setupScreen.style.display="none"; appWrapper.style.display="flex"; updateSidebarDisplay(); render(); checkUIState(); 
+        if(d.loginId) document.getElementById('login-id').value = d.loginId;
+        if(d.password) document.getElementById('login-pass').value = d.password;
     } 
   } catch (err) { console.error('読み込みエラー:', err); }
-  setupFirebaseListeners();
 }
 
 function triggerEffects(sender, text, showPopup = false) { notifSound.currentTime = 0; let p = notifSound.play(); if(p !== undefined) p.catch(()=>{}); if(navigator.vibrate) navigator.vibrate([100, 50, 100]); if (showPopup) { const sEl = document.getElementById("notif-sender"); const tEl = document.getElementById("notif-text"); if(sEl && tEl) { sEl.innerText = sender; tEl.innerText = text; notifOverlay.style.display = "flex"; setTimeout(() => { notifOverlay.style.display = "none"; }, 3000); } } }
@@ -585,7 +692,6 @@ function generateSNS() { const ps = [{ user: state.names.ai, time: "1年前", im
 window.openSNS = () => { generateSNS(); snsScreen.style.display = "flex"; };
 snsBackBtn.onclick = () => {
   snsScreen.style.display = "none";
-  // アーカイブを閉じたら即チャット画面を表示（通知タップ待ちで真っ暗になるバグを修正）
   appWrapper.style.display = "flex";
   if (state.messages.hina.length === 0) {
     state.messages.hina.push({ role: 'ai', name: state.names.ai, text: 'ねえ、大事な話なんだけど、別れてほしい', icon: state.aiIcon, time: getTime() });
@@ -618,8 +724,10 @@ startBtn.onclick = () => {
   state.aiFirstPerson = aFpVal === 'name' ? aName : aFpVal; 
 
   state.zpayHistory.push({ type: 'charge', amount: 5000, desc: '初回登録ボーナス', date: getTime() }); 
+  
+  save(); 
   setupScreen.style.display = "none"; 
-  openSNS(); 
+  episodeScreen.style.display = 'flex'; 
 };
 
 document.getElementById("notif-banner").onclick = () => { notifOverlay.style.display = "none"; appWrapper.style.display = "flex"; if(state.messages.hina.length === 0) { state.messages.hina.push({ role:'ai', name:state.names.ai, text:'ねえ、大事な話なんだけど、別れてほしい', icon:state.aiIcon, time:getTime() }); } render(); updateSidebarDisplay(); checkUIState(); save(); };
@@ -836,7 +944,8 @@ sendBtn.onclick = () => {
 
 function updateSidebarDisplay() { document.getElementById("display-ai-name").innerText = state.names.ai; document.getElementById("list-icon-hina").src = state.aiIcon; document.getElementById("display-bf-name").innerText = state.names.bf; document.getElementById("list-icon-bf").src = bfIcon; if(state.isInvited) { document.getElementById('list-group').classList.remove('hidden'); document.getElementById("stack-icon-ai").src = state.aiIcon; } if(state.isBfUnlocked) { document.getElementById('list-bf').classList.remove('hidden'); } ['hina', 'group', 'bf'].forEach(id => { const msgs = state.messages[id]; if (msgs && msgs.length > 0) { let prevText = msgs[msgs.length - 1].isPayment ? "送金しました" : msgs[msgs.length - 1].text; document.getElementById(`list-preview-${id}`).innerText = prevText; document.getElementById(`list-time-${id}`).innerText = msgs[msgs.length - 1].time; } const badge = document.getElementById(`badge-${id}`); if (state.unread[id] > 0) { badge.innerText = state.unread[id]; badge.style.display = 'flex'; } else { badge.style.display = 'none'; } }); }
 
-load();
+// ロードはログイン画面表示前に入力欄への事前埋め込みのみ行う
+initLoad();
 </script>
 
 </body>
