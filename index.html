@@ -462,7 +462,6 @@ function generateSessionId() {
   return 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
 }
 
-// stateにloginIdとpasswordを追加
 let state = { loginId: "", password: "", sessionId: generateSessionId(), names: { user: "", ai: "", bf: "" }, firstPerson: "僕", aiFirstPerson: "私", userIcon: defaultUserIcon, aiIcon: defaultAiIcon, storyStep: 0, messages: { hina: [], group: [], bf: [] }, unread: { hina: 0, group: 0, bf: 0 }, isInvited: false, isJoined: false, isBfUnlocked: false, zpayBalance: 5000, zpayHistory: [], tributePaid: 0, usedCodes: [] };
 
 let isAutoMode = true;
@@ -504,53 +503,50 @@ function setupFirebaseListeners() {
   });
 }
 
-// 修正済み：ログイン処理（大文字小文字の差異やデータ欠落への対応＋セキュリティ要件の追加）
+// 修正済み：ログイン処理（全角・半角の差異の解消とデータ同期修復機能の追加）
 document.getElementById('login-btn').onclick = async () => {
-    // 小文字に統一して大文字・小文字の違いによる別アカウント化を防ぐ
-    const lid = document.getElementById('login-id').value.trim().toLowerCase();
-    const pass = document.getElementById('login-pass').value.trim();
-    if(!lid || !pass) return showToast("IDとパスワードを入力してください", true);
-
-    // セキュリティ要件：英数字混在8文字以上
-    const isValidSecurity = (str) => {
-        return str.length >= 8 && /[a-zA-Z]/.test(str) && /[0-9]/.test(str);
+    // 【重要】iOSなどで全角入力された英数字を半角に強制変換して統一化
+    const toHalfWidth = (str) => {
+        return str.replace(/[！-～]/g, function(s) {
+            return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+        }).replace(/　/g, ' ');
     };
 
-    if (!isValidSecurity(lid) || !isValidSecurity(pass)) {
-        return showToast("IDとパスワードは英字と数字を混ぜた8文字以上で入力してください", true);
-    }
+    const lid = toHalfWidth(document.getElementById('login-id').value).trim().toLowerCase();
+    const pass = toHalfWidth(document.getElementById('login-pass').value).trim();
+    if(!lid || !pass) return showToast("IDとパスワードを入力してください", true);
 
-    // Firebaseで使えない記号を弾く
-    if(/[.#$\[\]]/.test(lid)) {
-        return showToast("IDに不正な文字(. # $ [ ])が含まれています", true);
-    }
+    const isValidSecurity = (str) => { return str.length >= 8 && /[a-zA-Z]/.test(str) && /[0-9]/.test(str); };
+    if (!isValidSecurity(lid) || !isValidSecurity(pass)) { return showToast("IDとパスワードは英字と数字を混ぜた8文字以上で入力してください", true); }
+    if(/[.#$\[\]]/.test(lid)) { return showToast("IDに不正な文字(. # $ [ ])が含まれています", true); }
 
     const btn = document.getElementById('login-btn');
     const originalText = btn.innerText;
     btn.innerText = "通信中...";
     btn.disabled = true;
 
-    // ローカルデータの取得（Firebaseエラー時の保険）
     let localData = null;
-    try {
-        localData = await localforage.getItem('hinaChat_WebRelease_v1');
-    } catch(e) {}
+    try { localData = await localforage.getItem('hinaChat_WebRelease_v1'); } catch(e) {}
 
-    // Firebaseへの問い合わせ
     db.ref('users_data/' + lid).once('value').then((snap) => {
         btn.innerText = originalText;
         btn.disabled = false;
         
-        const data = snap.val();
+        let data = snap.val();
+        
+        // 【重要】Firebaseにデータが無いが、ローカルには該当アカウントのデータが存在する場合
+        // 画像サイズ上限等で過去にクラウド保存が失敗していたケースを救済し、クラウドへ再同期する
+        if (!data && localData && localData.loginId === lid && localData.password === pass) {
+            data = { password: pass, state: localData };
+            const cleanState = JSON.parse(JSON.stringify(localData));
+            db.ref('users_data/' + lid).set({ password: pass, state: cleanState });
+        }
+
         if(data) {
-            if(data.password !== pass) {
-                return showToast("パスワードが違います", true);
-            }
-            // ログイン成功
-            // Firebaseの仕様で空配列やオブジェクトが欠損する場合があるため補完する
+            if(data.password !== pass) { return showToast("パスワードが違います", true); }
             const loadedState = data.state || {};
             state = {
-                ...state, // デフォルト値をベースにする
+                ...state,
                 ...loadedState,
                 names: loadedState.names || { user: "", ai: "", bf: "" },
                 messages: {
@@ -564,14 +560,9 @@ document.getElementById('login-btn').onclick = async () => {
             };
             isFirstTime = false;
             loginScreen.style.display = 'none';
-            // 初期設定チェック
-            if(!state.names || !state.names.user || !state.names.ai) {
-                setupScreen.style.display = 'flex';
-            } else {
-                episodeScreen.style.display = 'flex';
-            }
+            if(!state.names || !state.names.user || !state.names.ai) { setupScreen.style.display = 'flex'; } 
+            else { episodeScreen.style.display = 'flex'; }
         } else {
-            // 新規作成
             state.loginId = lid;
             state.password = pass;
             loginScreen.style.display = 'none';
@@ -581,7 +572,7 @@ document.getElementById('login-btn').onclick = async () => {
         setupFirebaseListeners();
     }).catch((error) => {
         console.error("Firebase通信エラー:", error);
-        // Firebaseが使えない場合（通信エラーやDB権限エラー等）、ローカルデータを使って進める
+        // フォールバック: Firebaseが完全にダウンしている場合
         if (localData && localData.loginId === lid) {
             if(localData.password !== pass) {
                 btn.innerText = originalText; btn.disabled = false;
@@ -603,15 +594,11 @@ document.getElementById('login-btn').onclick = async () => {
             };
             isFirstTime = false;
             loginScreen.style.display = 'none';
-            if(!state.names || !state.names.user || !state.names.ai) {
-                setupScreen.style.display = 'flex';
-            } else {
-                episodeScreen.style.display = 'flex';
-            }
+            if(!state.names || !state.names.user || !state.names.ai) { setupScreen.style.display = 'flex'; } 
+            else { episodeScreen.style.display = 'flex'; }
             save();
             setupFirebaseListeners();
         } else {
-            // ローカルにもデータがない場合は新規作成として進める
             state.loginId = lid;
             state.password = pass;
             loginScreen.style.display = 'none';
@@ -624,20 +611,17 @@ document.getElementById('login-btn').onclick = async () => {
     });
 };
 
-// エピソード選択処理
 window.selectEpisode = (epNum) => {
     if(epNum === 1) {
         if(state.messages && state.messages.hina && state.messages.hina.length > 0) {
-            playModeModal.style.display = 'flex'; // 進行中のデータがあればモーダル表示
+            playModeModal.style.display = 'flex';
         } else {
-            startEpisode(true); // なければ最初から
+            startEpisode(true);
         }
     }
 };
 
-window.closePlayModeModal = () => {
-    playModeModal.style.display = 'none';
-};
+window.closePlayModeModal = () => { playModeModal.style.display = 'none'; };
 
 window.startEpisode = (isRestart) => {
     playModeModal.style.display = 'none';
@@ -660,7 +644,7 @@ window.startEpisode = (isRestart) => {
         isFirstTime = false;
     }
 
-    openSNS(); // アーカイブから開始
+    openSNS();
 };
 
 window.openZPayHistory = () => { document.getElementById('zpay-home').style.display = 'none'; document.getElementById('zpay-history').style.display = 'flex'; const list = document.getElementById('zpay-history-list'); if(state.zpayHistory.length === 0) { list.innerHTML = `<p style="text-align:center; color:#888; margin-top:20px;">取引履歴がありません</p>`; return; } list.innerHTML = state.zpayHistory.slice().reverse().map(h => `<div class="history-item"><div class="history-info"><span class="history-title">${h.desc}</span><span class="history-date">${h.date}</span></div><span class="history-amount ${h.type === 'charge' ? 'plus' : 'minus'}">${h.type === 'charge' ? '+' : '-'}¥${h.amount.toLocaleString()}</span></div>`).join(''); };
@@ -747,17 +731,39 @@ profileCallBtn.onclick = () => { closeProfile(); const screen = document.getElem
 window.endCallForce = () => { clearTimeout(callTimeout1); clearTimeout(callTimeout2); callRingSound.pause(); callEndSound.currentTime = 0; callEndSound.play().catch(()=>{}); endCall("キャンセル"); };
 function endCall(msg) { document.getElementById("call-screen").style.display = "none"; const targetRoom = currentProfileRole === 'ai' ? 'hina' : 'bf'; state.messages[targetRoom].push({ role:'user', name:state.names.user, text: `☎️ 通話 ${msg}`, time: getTime() }); if(targetRoom === currentRoom) render(); save(); updateSidebarDisplay(); db.ref(`users/${state.sessionId}/user_input`).push({ room: targetRoom, text: `【通話アクション】 ☎️ ${msg}`, time: getTime(), timestamp: Date.now() }); }
 
-regUserIcon.onchange = (e) => { const f = e.target.files[0]; if (f) { const r = new FileReader(); r.onload = (ev) => { state.userIcon = ev.target.result; setupUserPreview.src = ev.target.result; }; r.readAsDataURL(f); } };
-regAiIcon.onchange = (e) => { const f = e.target.files[0]; if (f) { const r = new FileReader(); r.onload = (ev) => { state.aiIcon = ev.target.result; setupAiPreview.src = ev.target.result; }; r.readAsDataURL(f); } };
+// 【重要】画像をアップロードした際、Firebaseの容量制限やタイムアウトを回避するため、軽量化処理（リサイズ・JPEG圧縮）を強制的に行います。
+function compressImage(file, callback) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let w = img.width, h = img.height;
+            const max = 300; // 最大サイズを300pxに圧縮
+            if (w > h) { if (w > max) { h = Math.round(h * max / w); w = max; } }
+            else { if (h > max) { w = Math.round(w * max / h); h = max; } }
+            canvas.width = w; canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            callback(canvas.toDataURL('image/jpeg', 0.8)); // 80%の画質でJPEG出力
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
 
-// 修正済み：保存処理（Firebaseエラー時にクラッシュしないようにする）
+regUserIcon.onchange = (e) => { const f = e.target.files[0]; if (f) { compressImage(f, (res) => { state.userIcon = res; setupUserPreview.src = res; }); } };
+regAiIcon.onchange = (e) => { const f = e.target.files[0]; if (f) { compressImage(f, (res) => { state.aiIcon = res; setupAiPreview.src = res; }); } };
+
+// 【重要】Firebaseのエラー落ちを防ぐため、JSONパースでundefinedや関数などの不正な値を完全除去してから保存します
 async function save() { 
   try { 
     await localforage.setItem('hinaChat_WebRelease_v1', state); 
     if(state.loginId) {
+        const cleanState = JSON.parse(JSON.stringify(state));
         db.ref('users_data/' + state.loginId).set({
             password: state.password,
-            state: state
+            state: cleanState
         }).catch(e => console.warn("Firebase保存エラー (ローカルには保存されました):", e));
     }
   } catch (err) { console.error('保存エラー:', err); }
