@@ -250,6 +250,8 @@
     <div class="setup-form">
       <div class="input-group"><label>あなたのアイコン</label><div class="photo-setup"><img id="setup-user-preview" src="" class="setup-preview-img"><input type="file" id="reg-user-icon" accept="image/*" style="display:none"><button type="button" class="mini-btn" onclick="document.getElementById('reg-user-icon').click()">写真を選ぶ</button></div></div>
       <div class="input-group"><label>彼女のアイコン</label><div class="photo-setup"><img id="setup-ai-preview" src="" class="setup-preview-img"><input type="file" id="reg-ai-icon" accept="image/*" style="display:none"><button type="button" class="mini-btn" onclick="document.getElementById('reg-ai-icon').click()">写真を選ぶ</button></div></div>
+      <div class="input-group"><label>彼氏のアイコン</label><div class="photo-setup"><img id="setup-bf-preview" src="" class="setup-preview-img"><input type="file" id="reg-bf-icon" accept="image/*" style="display:none"><button type="button" class="mini-btn" onclick="document.getElementById('reg-bf-icon').click()">写真を選ぶ</button></div></div>
+      
       <div class="input-group"><label>自分の名前</label><input type="text" id="reg-user-name" placeholder="例：ともや"></div>
 
       <div class="input-group"><label>あなたの一人称</label>
@@ -427,7 +429,7 @@ function escapeHTML(str) {
 
 const setupScreen = document.getElementById("setup-screen"), episodeScreen = document.getElementById("episode-screen"), playModeModal = document.getElementById("play-mode-modal");
 const snsScreen = document.getElementById("sns-screen"), snsFeed = document.getElementById("sns-feed"), snsBackBtn = document.getElementById("sns-back-btn"), notifOverlay = document.getElementById("notif-overlay"), appWrapper = document.getElementById("app-wrapper"), startBtn = document.getElementById("start-btn"), chatDisplay = document.getElementById("chat-display"), sendBtn = document.getElementById("send-btn"), input = document.getElementById("message-input"), standardInput = document.getElementById("standard-input"), choiceArea = document.getElementById("choice-area"), profileScreen = document.getElementById("profile-screen"), profileTalkBtn = document.getElementById("profile-talk-btn"), profileCallBtn = document.getElementById("profile-call-btn"), joinScreen = document.getElementById("join-screen"), joinDesc = document.getElementById("join-desc");
-const regUserIcon = document.getElementById("reg-user-icon"), setupUserPreview = document.getElementById("setup-user-preview"), regAiIcon = document.getElementById("reg-ai-icon"), setupAiPreview = document.getElementById("setup-ai-preview");
+const regUserIcon = document.getElementById("reg-user-icon"), setupUserPreview = document.getElementById("setup-user-preview"), regAiIcon = document.getElementById("reg-ai-icon"), setupAiPreview = document.getElementById("setup-ai-preview"), regBfIcon = document.getElementById("reg-bf-icon"), setupBfPreview = document.getElementById("setup-bf-preview");
 
 // 外部画像（Unsplash等）への直リンクを廃止し、色付き背景と絵文字を組み合わせたSVGデータURIを使用
 const defaultUserIcon = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%234a90e2'/%3E%3Ctext x='50' y='65' font-size='50' text-anchor='middle' fill='white'%3E👤%3C/text%3E%3C/svg%3E";
@@ -437,12 +439,12 @@ const bfIcon = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org
 // HTML初期状態のプレビュー画像にデフォルトSVGをセット
 setupUserPreview.src = defaultUserIcon;
 setupAiPreview.src = defaultAiIcon;
-document.getElementById('stack-icon-bf').src = bfIcon;
+setupBfPreview.src = bfIcon;
 
 let currentRoom = 'hina', isFirstTime = true, isProcessing = false;
 let currentProfileRole = ''; let callTimeout1, callTimeout2; 
 
-let state = { names: { user: "", ai: "", bf: "" }, firstPerson: "僕", aiFirstPerson: "私", userIcon: defaultUserIcon, aiIcon: defaultAiIcon, storyStep: 0, messages: { hina: [], group: [], bf: [] }, unread: { hina: 0, group: 0, bf: 0 }, isInvited: false, isJoined: false, isBfUnlocked: false, zpayBalance: 5000, zpayHistory: [], tributePaid: 0, tributePaidGroup: 0, usedCodes: [] };
+let state = { names: { user: "", ai: "", bf: "" }, firstPerson: "僕", aiFirstPerson: "私", userIcon: defaultUserIcon, aiIcon: defaultAiIcon, bfIcon: bfIcon, storyStep: 0, messages: { hina: [], group: [], bf: [] }, unread: { hina: 0, group: 0, bf: 0 }, isInvited: false, isJoined: false, isBfUnlocked: false, zpayBalance: 5000, zpayHistory: [], tributePaid: 0, tributePaidGroup: 0, usedCodes: [] };
 
 let isAutoMode = true;
 
@@ -456,6 +458,7 @@ window.onload = async () => {
       state = {
         ...state,
         ...savedState,
+        bfIcon: savedState.bfIcon || bfIcon,
         names: savedState.names || { user: "", ai: "", bf: "" },
         messages: {
             hina: (savedState.messages && savedState.messages.hina) ? savedState.messages.hina : [],
@@ -626,7 +629,7 @@ window.executeSend = () => {
         isProcessing = true; showTyping(targetRoom, () => {
           let resText = targetRoom === 'bf' ? "急に金送ってきてどうした？まぁ貰っとくわｗ" : "お金ありがとうｗ";
           let resRole = targetRoom === 'bf' ? 'bf' : 'ai';
-          let resIcon = targetRoom === 'bf' ? bfIcon : state.aiIcon;
+          let resIcon = targetRoom === 'bf' ? state.bfIcon : state.aiIcon;
           let resName = targetRoom === 'bf' ? state.names.bf : state.names.ai;
           state.messages[targetRoom].push({ role:resRole, name:resName, icon:resIcon, text:resText, time:getTime() });
           isProcessing = false; if(currentRoom === targetRoom) render(); triggerEffects(resName, resText, false); save();
@@ -639,18 +642,18 @@ window.openMembers = () => {
   document.getElementById("members-list").innerHTML = `
     <div class="member-item"><img src="${state.userIcon}" class="member-icon"><span class="member-name">${escapeHTML(state.names.user)} (あなた)</span></div>
     <div class="member-item"><img src="${state.aiIcon}" class="member-icon" onclick="closeMembers(); openProfile('ai')"><span class="member-name">${escapeHTML(state.names.ai)}</span></div>
-    <div class="member-item"><img src="${bfIcon}" class="member-icon" onclick="closeMembers(); openProfile('bf')"><span class="member-name">${escapeHTML(state.names.bf)}</span></div>`; 
+    <div class="member-item"><img src="${state.bfIcon}" class="member-icon" onclick="closeMembers(); openProfile('bf')"><span class="member-name">${escapeHTML(state.names.bf)}</span></div>`; 
   document.getElementById("members-modal").style.display = "flex"; 
 };
 window.closeMembers = () => { document.getElementById("members-modal").style.display = "none"; };
-window.openProfile = (role) => { currentProfileRole = role; const nameEl = document.getElementById("profile-name"), avatarEl = document.getElementById("profile-avatar"), bgEl = document.getElementById("profile-bg"), statusEl = document.getElementById("profile-status"), addBtn = document.getElementById("add-friend-btn"); if (role === 'ai') { nameEl.innerText = state.names.ai; avatarEl.src = state.aiIcon; bgEl.style.backgroundImage = `url("${state.aiIcon}")`; statusEl.innerText = "新しい幸せ見つけた✨"; addBtn.style.display = "none"; profileTalkBtn.onclick = () => { closeProfile(); switchRoom('hina'); }; } else if (role === 'bf') { nameEl.innerText = state.names.bf; avatarEl.src = bfIcon; bgEl.style.backgroundImage = `url("${bfIcon}")`; statusEl.innerText = "俺が一番。ひなは俺のもの。"; addBtn.style.display = "flex"; profileTalkBtn.onclick = () => { closeProfile(); if (!state.isBfUnlocked) { state.isBfUnlocked = true; updateSidebarDisplay(); } switchRoom('bf'); }; } profileScreen.style.display = "flex"; };
+window.openProfile = (role) => { currentProfileRole = role; const nameEl = document.getElementById("profile-name"), avatarEl = document.getElementById("profile-avatar"), bgEl = document.getElementById("profile-bg"), statusEl = document.getElementById("profile-status"), addBtn = document.getElementById("add-friend-btn"); if (role === 'ai') { nameEl.innerText = state.names.ai; avatarEl.src = state.aiIcon; bgEl.style.backgroundImage = `url("${state.aiIcon}")`; statusEl.innerText = "新しい幸せ見つけた✨"; addBtn.style.display = "none"; profileTalkBtn.onclick = () => { closeProfile(); switchRoom('hina'); }; } else if (role === 'bf') { nameEl.innerText = state.names.bf; avatarEl.src = state.bfIcon; bgEl.style.backgroundImage = `url("${state.bfIcon}")`; statusEl.innerText = "俺が一番。ひなは俺のもの。"; addBtn.style.display = "flex"; profileTalkBtn.onclick = () => { closeProfile(); if (!state.isBfUnlocked) { state.isBfUnlocked = true; updateSidebarDisplay(); } switchRoom('bf'); }; } profileScreen.style.display = "flex"; };
 window.closeProfile = () => { profileScreen.style.display = "none"; };
 
 // 通話機能（音声削除版）
 profileCallBtn.onclick = () => { 
   closeProfile(); 
   const screen = document.getElementById("call-screen"); 
-  document.getElementById("call-avatar").src = currentProfileRole === 'ai' ? state.aiIcon : bfIcon; 
+  document.getElementById("call-avatar").src = currentProfileRole === 'ai' ? state.aiIcon : state.bfIcon; 
   document.getElementById("call-name").innerText = currentProfileRole === 'ai' ? state.names.ai : state.names.bf; 
   document.getElementById("call-status").innerText = "発信中..."; 
   document.getElementById("call-subtitles").innerText = ""; 
@@ -694,6 +697,7 @@ function compressImage(file, callback) {
 
 regUserIcon.onchange = (e) => { const f = e.target.files[0]; if (f) { compressImage(f, (res) => { state.userIcon = res; setupUserPreview.src = res; }); } };
 regAiIcon.onchange = (e) => { const f = e.target.files[0]; if (f) { compressImage(f, (res) => { state.aiIcon = res; setupAiPreview.src = res; }); } };
+regBfIcon.onchange = (e) => { const f = e.target.files[0]; if (f) { compressImage(f, (res) => { state.bfIcon = res; setupBfPreview.src = res; }); } };
 
 async function save() { 
   try { 
@@ -851,7 +855,7 @@ function checkUIState() {
       } else if (currentRoom === 'group' && state.isJoined) {
         if (state.storyStep === 7) showChoices([
             {text:`${AN}様、かしこまりました`, next:'g_step1'},
-            {text:`${AN}様、わかりました`, next:'g_step1'}
+            {text:`${AN}様、わかりました`, next:'g_step1_alt'}
         ]);
         else if (state.storyStep === 8) showChoices([
             {text:`${BN}様、よろしくお願いします`, next:'g_step2'}
@@ -914,7 +918,7 @@ function render() {
     
     const isU = m.role==='user', wrapper = isU?'user-wrapper':'ai-wrapper', cls = m.role==='bf'?'bf-message':(isU?'user-message':'ai-message');
     const isRead = isU && i < state.messages[currentRoom].length - 1;
-    const icon = m.role==='user' ? state.userIcon : (m.role==='bf' ? bfIcon : state.aiIcon);
+    const icon = m.role==='user' ? state.userIcon : (m.role==='bf' ? state.bfIcon : state.aiIcon);
     const clickAttr = isU ? '' : `onclick="openProfile('${m.role}')"`;
     
     if(m.isPayment) { 
@@ -990,9 +994,23 @@ function aiReply(stepKey) {
 
     // Group
     else if(stepKey === 'g_step1') { res.text = `まず彼氏に挨拶しな？${UN}くんの代わりに${AN}のこと幸せにしてくれるんだから笑`; state.storyStep = 8; }
-    else if(stepKey === 'g_step2') { res.role = 'bf'; res.name = state.names.bf; res.icon = bfIcon; res.text = "よろしくな元カレくんw たくさんこき使ってやるよw 返事は？"; state.storyStep = 9; }
+    else if(stepKey === 'g_step1_alt') {
+        res.text = `「かしこまりました」ね？敬語ちゃんと使いなよ笑`;
+        state.messages[currentRoom].push(res); render(); triggerEffects(res.name, res.text, false); save();
+        setTimeout(() => {
+            showTyping(currentRoom, () => {
+                let res2 = { role:'ai', name:state.names.ai, icon:state.aiIcon, time:getTime() };
+                res2.text = `まず彼氏に挨拶しな？${UN}くんの代わりに${AN}のこと幸せにしてくれるんだから笑`;
+                state.storyStep = 8;
+                state.messages[currentRoom].push(res2); render(); triggerEffects(res2.name, res2.text, false); 
+                isProcessing = false; save(); checkUIState();
+            });
+        }, 1500);
+        return;
+    }
+    else if(stepKey === 'g_step2') { res.role = 'bf'; res.name = state.names.bf; res.icon = state.bfIcon; res.text = "よろしくな元カレくんw たくさんこき使ってやるよw 返事は？"; state.storyStep = 9; }
     else if(stepKey === 'g_branch_refusal') { 
-        res.role = 'bf'; res.name = state.names.bf; res.icon = bfIcon; res.text = "は？"; 
+        res.role = 'bf'; res.name = state.names.bf; res.icon = state.bfIcon; res.text = "は？"; 
         state.storyStep = 10;
         state.messages[currentRoom].push(res); render(); triggerEffects(res.name, res.text, false); save();
         setTimeout(() => {
@@ -1007,7 +1025,7 @@ function aiReply(stepKey) {
     }
     else if(stepKey === 'g_branch_accept' || stepKey === 'g_branch_accept2') { 
         if (stepKey === 'g_branch_accept2') {
-            res.role = 'bf'; res.name = state.names.bf; res.icon = bfIcon; res.text = "これからよろしく頼むよ、奴隷くんw";
+            res.role = 'bf'; res.name = state.names.bf; res.icon = state.bfIcon; res.text = "これからよろしく頼むよ、奴隷くんw";
             state.messages[currentRoom].push(res); render(); triggerEffects(res.name, res.text, false); save();
             setTimeout(() => {
                 showTyping(currentRoom, () => {
@@ -1031,7 +1049,7 @@ function aiReply(stepKey) {
         state.messages[currentRoom].push(res); render(); triggerEffects(res.name, res.text, false); save();
         setTimeout(() => {
             showTyping(currentRoom, () => {
-                let res2 = { role:'bf', name:state.names.bf, icon:bfIcon, time:getTime() };
+                let res2 = { role:'bf', name:state.names.bf, icon:state.bfIcon, time:getTime() };
                 res2.text = `便利な元カレで助かるわw`;
                 state.messages[currentRoom].push(res2); render(); triggerEffects(res2.name, res2.text, false); save();
                 
@@ -1055,7 +1073,7 @@ function aiReply(stepKey) {
     else if(stepKey === 'g_step7_2') { res.text = `また貢いでもらうからそれまでに稼いどいてね`; state.storyStep = 16; }
     else if(stepKey === 'g_step7_3') { res.text = `言われなくても使ってあげるから安心しな`; state.storyStep = 16; }
     else if(stepKey === 'g_step8') {
-        res.role = 'bf'; res.name = state.names.bf; res.icon = bfIcon; res.text = `じゃあこれからお泊まりだからじゃあなw`;
+        res.role = 'bf'; res.name = state.names.bf; res.icon = state.bfIcon; res.text = `じゃあこれからお泊まりだからじゃあなw`;
         state.messages[currentRoom].push(res); render(); triggerEffects(res.name, res.text, false); save();
         setTimeout(() => {
             showTyping(currentRoom, () => {
@@ -1065,7 +1083,7 @@ function aiReply(stepKey) {
                 
                 setTimeout(() => {
                     showTyping(currentRoom, () => {
-                        let res3 = { role:'bf', name:state.names.bf, icon:bfIcon, time:getTime() };
+                        let res3 = { role:'bf', name:state.names.bf, icon:state.bfIcon, time:getTime() };
                         res3.text = `また気が向いたら連絡してやるよ`;
                         state.storyStep = 17; 
                         state.messages[currentRoom].push(res3); render(); triggerEffects(res3.name, res3.text, false); 
@@ -1077,7 +1095,7 @@ function aiReply(stepKey) {
         return;
     }
 
-    else if(currentRoom === 'bf') { res.name = state.names.bf; res.role = 'bf'; res.icon = bfIcon; res.text = `直接LINEしてくんな。用があるならグループで言えやｗ`; }
+    else if(currentRoom === 'bf') { res.name = state.names.bf; res.role = 'bf'; res.icon = state.bfIcon; res.text = `直接LINEしてくんな。用があるならグループで言えやｗ`; }
     else { res.text = "返事遅いんだけど？"; }
 
     state.messages[currentRoom].push(res); render(); triggerEffects(res.name, res.text, false);
@@ -1109,11 +1127,12 @@ function updateSidebarDisplay() {
   document.getElementById("display-ai-name").innerText = state.names.ai; 
   document.getElementById("list-icon-hina").src = state.aiIcon; 
   document.getElementById("display-bf-name").innerText = state.names.bf; 
-  document.getElementById("list-icon-bf").src = bfIcon; 
+  document.getElementById("list-icon-bf").src = state.bfIcon; 
   
   if(state.isInvited) { 
     document.getElementById('list-group').classList.remove('hidden'); 
     document.getElementById("stack-icon-ai").src = state.aiIcon; 
+    document.getElementById("stack-icon-bf").src = state.bfIcon; 
   } 
   if(state.isBfUnlocked) { 
     document.getElementById('list-bf').classList.remove('hidden'); 
