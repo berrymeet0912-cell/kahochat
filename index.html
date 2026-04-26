@@ -83,6 +83,14 @@
       width: 100vw;
     }
 
+    /* 免責事項のスタイル */
+    .disclaimer-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: flex; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
+    .disclaimer-card { background: #1a1a1a; padding: 30px; border-radius: 20px; width: 100%; max-width: 400px; border: 1px solid #444; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+    .disclaimer-title { font-size: 18px; font-weight: bold; color: #ff6b6b; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+    .disclaimer-text { font-size: 14px; color: #ddd; line-height: 1.6; margin-bottom: 15px; }
+    .disclaimer-btn { width: 100%; padding: 15px; background: #6a1b9a; color: white; border: none; border-radius: 10px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+    .disclaimer-btn:active { transform: scale(0.98); background: #8a2be2; }
+
     .setup-wrapper { display: flex; justify-content: center; align-items: center; height: 100dvh; height: 100vh; padding: 20px; }
     .setup-card { background: #1a1a1a; padding: 25px; border-radius: 20px; width: 100%; max-width: 360px; border: 1px solid #333; }
     .input-group { margin-bottom: 12px; display: flex; flex-direction: column; gap: 5px; }
@@ -243,6 +251,15 @@
   </style>
 </head>
 <body>
+
+<div id="disclaimer-screen" class="disclaimer-wrapper">
+  <div class="disclaimer-card">
+    <h2 class="disclaimer-title">⚠️ 免責事項</h2>
+    <p class="disclaimer-text">• これはフィクションのストーリーを体験するためのエンターテイメントアプリです。</p>
+    <p class="disclaimer-text">• 登場する人物やZ-Payなどの名称はすべて架空のものであり、現実の金銭的価値はありません。</p>
+    <button id="disclaimer-btn" class="disclaimer-btn">同意してはじめる</button>
+  </div>
+</div>
 
 <div id="setup-screen" class="setup-wrapper" style="display: none;">
   <div class="setup-card">
@@ -413,6 +430,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
 
 <script>
+// 免責事項の制御ロジック
+document.getElementById("disclaimer-btn").onclick = () => {
+  document.getElementById("disclaimer-screen").style.display = "none";
+};
+
 // XSS（クロスサイトスクリプティング）を防止する関数
 function escapeHTML(str) {
   if (typeof str !== 'string') return str;
