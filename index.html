@@ -252,6 +252,7 @@
     <p class="disclaimer-text">• これはフィクションのストーリーを体験するためのエンターテイメントアプリです。</p>
     <p class="disclaimer-text">• 登場する人物やZ-Payなどの名称はすべて架空のものであり、現実の金銭的価値はありません。</p>
     <p class="disclaimer-text">• 本アプリ内のZ-Pay残高(Z)は現金への払い戻しや換金、他サービスでの利用は一切できません。</p>
+    <p class="disclaimer-text">• このアプリ内のZはフィクション上のポイントであり、現実の通貨・仮想通貨・電子マネーではありません。</p>
     <button id="disclaimer-btn" class="disclaimer-btn">同意してはじめる</button>
   </div>
 </div>
@@ -360,19 +361,19 @@
     <div class="zpay-card">
       <p class="zpay-label">Total Balance</p>
       <h1 class="zpay-balance"><span id="zpay-balance-display">0</span><span style="font-size: 24px; margin-left: 4px;">Z</span></h1>
-      <p style="font-size: 10px; color: #888; margin-top: 8px; text-align: right;">※Z-Pay残高の有効期限は180日とする</p>
+      <p style="font-size: 10px; color: #888; margin-top: 8px; text-align: right;">※Z-Pay残高の有効期限は180日とする<br>※このアプリ内のZはフィクション上のポイントであり、現実の通貨・仮想通貨・電子マネーではありません。</p>
       <div class="zpay-card-chip"></div>
     </div>
     <div class="zpay-actions">
-      <div class="zpay-action-btn" onclick="openZPaySend()"><div class="zpay-icon send-icon">↑</div><span>Zを渡す</span></div>
+      <div class="zpay-action-btn" onclick="openZPaySend()"><div class="zpay-icon send-icon">↑</div><span>Zをプレゼント</span></div>
       <div class="zpay-action-btn" onclick="openZPayHistory()"><div class="zpay-icon history-icon">≡</div><span>履歴</span></div>
     </div>
   </div>
 
   <div id="zpay-send" class="zpay-page" style="display: none;">
-    <h2 class="zpay-page-title">Zを渡す</h2>
+    <h2 class="zpay-page-title">Zをプレゼント</h2>
     <div class="zpay-recipient-wrap">
-      <label class="zpay-recipient-label">渡す相手を選択</label>
+      <label class="zpay-recipient-label">プレゼントする相手を選択</label>
       <select id="zpay-recipient-select" class="zpay-select">
         </select>
     </div>
@@ -380,7 +381,7 @@
       <span class="zpay-currency">Z</span>
       <input type="number" id="zpay-amount-input" placeholder="0" class="zpay-amount">
     </div>
-    <button class="zpay-primary-btn" onclick="executeSend()">スワイプしてZを渡す</button>
+    <button class="zpay-primary-btn" onclick="executeSend()">スワイプしてZをプレゼント</button>
   </div>
 
   <div id="zpay-history" class="zpay-page" style="display: none;">
@@ -614,8 +615,8 @@ window.executeSend = () => {
   let targetName = targetRoom === 'hina' ? state.names.ai : (targetRoom === 'bf' ? state.names.bf : "グループ");
   
   state.zpayBalance -= amount;
-  state.zpayHistory.push({ type: 'send', amount: amount, desc: `${targetName} 宛に渡す`, date: getTime() });
-  showToast(`${amount.toLocaleString()} Z を渡しました`);
+  state.zpayHistory.push({ type: 'send', amount: amount, desc: `${targetName} 宛にプレゼント`, date: getTime() });
+  showToast(`${amount.toLocaleString()} Z をプレゼントしました`);
   document.getElementById('zpay-amount-input').value = ""; closeZPay();
 
   state.messages[targetRoom].push({ role:'user', name:state.names.user, amount: amount, isPayment: true, time:getTime() });
@@ -948,7 +949,7 @@ function render() {
     const clickAttr = isU ? '' : `onclick="openProfile('${m.role}')"`;
     
     if(m.isPayment) { 
-        chatDisplay.innerHTML += `<div class="message-wrapper user-wrapper"><div class="meta-info">${isRead?'<span class="read-mark">既読</span>':''}<span>${m.time}</span></div><div class="message-content"><div class="payment-bubble"><div class="payment-header">💎 Z を渡しました</div><div class="payment-body"><div class="payment-amount">${m.amount.toLocaleString()} Z</div><div class="payment-desc">相手に渡しました</div></div></div></div><img src="${icon}" class="chat-icon"></div>`;
+        chatDisplay.innerHTML += `<div class="message-wrapper user-wrapper"><div class="meta-info">${isRead?'<span class="read-mark">既読</span>':''}<span>${m.time}</span></div><div class="message-content"><div class="payment-bubble"><div class="payment-header">💎 Z をプレゼントしました</div><div class="payment-body"><div class="payment-amount">${m.amount.toLocaleString()} Z</div><div class="payment-desc">相手にプレゼントしました</div></div></div></div><img src="${icon}" class="chat-icon"></div>`;
     } else { 
         chatDisplay.innerHTML += `<div class="message-wrapper ${wrapper}">${isU ? `<div class="meta-info">${isRead?'<span class="read-mark">既読</span>':''}<span>${m.time}</span></div>` : `<img src="${icon}" class="chat-icon" ${clickAttr}>`}<div class="message-content">${isU ? '' : `<div class="ai-name">${safeName}</div>`}<div class="message ${cls}">${safeText}</div></div>${isU ? `<img src="${icon}" class="chat-icon">` : `<span>${m.time}</span>`}</div>`; 
     }
@@ -1167,7 +1168,7 @@ function updateSidebarDisplay() {
   ['hina', 'group', 'bf'].forEach(id => { 
     const msgs = state.messages[id]; 
     if (msgs && msgs.length > 0) { 
-      let prevText = msgs[msgs.length - 1].isPayment ? "Zを渡しました" : msgs[msgs.length - 1].text; 
+      let prevText = msgs[msgs.length - 1].isPayment ? "Zをプレゼントしました" : msgs[msgs.length - 1].text; 
       document.getElementById(`list-preview-${id}`).innerText = prevText; 
       document.getElementById(`list-time-${id}`).innerText = msgs[msgs.length - 1].time; 
     } 
