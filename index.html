@@ -63,7 +63,6 @@
     .zpay-currency { font-size: 24px; color: #66fcf1; margin-right: 15px; }
     .zpay-amount { border: none; outline: none; width: 100%; font-size: 36px; font-weight: 300; color: white; background: transparent; }
     .zpay-primary-btn { background: linear-gradient(90deg, #45a29e, #66fcf1); color: #0b0c10; border: none; width: 100%; padding: 18px; border-radius: 30px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 20px rgba(102,252,241,0.4); }
-    .zpay-link { margin-top: 25px; font-size: 13px; color: #45a29e; text-decoration: none; border-bottom: 1px solid #45a29e; padding-bottom: 2px; }
     .payment-bubble { background: #1f2833; color: #fff; border-radius: 16px; overflow: hidden; width: 220px; border: 1px solid #333; }
     .payment-header { background: #0b0c10; color: #66fcf1; padding: 12px; font-weight: bold; font-size: 11px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #222; }
     .payment-body { padding: 20px 15px; text-align: center; }
@@ -99,7 +98,7 @@
     .photo-setup { display: flex; align-items: center; gap: 15px; background: #222; padding: 8px; border-radius: 12px; }
     .setup-preview-img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #8a2be2; background-color: #333; }
     .mini-btn { background: #444; color: white; border: none; padding: 8px 12px; border-radius: 8px; font-size: 11px; cursor: pointer; }
-    .primary-btn { width: 100%; padding: 14px; border: none; border-radius: 10px; background: #8a2be2; color: white; font-weight: bold; cursor: margin-top: 10px; }
+    .primary-btn { width: 100%; padding: 14px; border: none; border-radius: 10px; background: #8a2be2; color: white; font-weight: bold; cursor: pointer; margin-top: 10px; }
     .primary-btn:disabled { background: #555; cursor: not-allowed; }
     .hidden { display: none !important; }
     
@@ -373,7 +372,6 @@
     </div>
     <div class="zpay-input-wrap"><input type="text" id="zpay-code-input" placeholder="XXXX-XXXX-XXXX"></div>
     <button class="zpay-primary-btn" onclick="executeCharge()">チャージを実行</button>
-    <a href="#" class="zpay-link" onclick="showToast('noteの販売ページへ遷移します（モック）')">進行用コードを購入する</a>
   </div>
 
   <div id="zpay-send" class="zpay-page" style="display: none;">
