@@ -52,9 +52,6 @@
     .charge-icon { background: #66fcf1; box-shadow: 0 4px 15px rgba(102,252,241,0.3); }
     .send-icon { background: #45a29e; box-shadow: 0 4px 15px rgba(69,162,158,0.3); }
     .history-icon { background: #1f2833; color: #66fcf1; border: 1px solid #333; }
-    .zpay-barcode-area { background: #fff; border-radius: 15px; width: 100%; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-    .barcode-hint { color: #333; font-size: 11px; font-weight: bold; }
-    .fake-barcode { width: 90%; height: 70px; background: repeating-linear-gradient(90deg, #000, #000 3px, #fff 3px, #fff 6px, #000 6px, #000 8px, #fff 8px, #fff 12px); }
     .zpay-page-title { color: #fff; margin-bottom: 10px; font-size: 20px; font-weight: 300; }
     .zpay-sub-desc { color: #888; font-size: 12px; margin-bottom: 25px; }
     .zpay-input-wrap { width: 100%; background: #1f2833; border-radius: 12px; border: 1px solid #333; display: flex; align-items: center; padding: 12px 20px; margin-bottom: 30px; transition: 0.3s; }
@@ -364,8 +361,8 @@
   <div id="zpay-home" class="zpay-page">
     <div class="zpay-card">
       <p class="zpay-label">Total Balance</p>
-      <h1 class="zpay-balance">¥<span id="zpay-balance-display">0</span></h1>
-      <p style="font-size: 10px; color: #888; margin-top: 8px; text-align: right;">※Z-Pay残高の有効期限は180日とする</p>
+      <h1 class="zpay-balance"><span id="zpay-balance-display">0</span> pt</h1>
+      <p style="font-size: 10px; color: #888; margin-top: 8px; text-align: right;">※ストーリーポイントの有効期限は180日とする</p>
       <div class="zpay-card-chip"></div>
     </div>
     <div class="zpay-actions">
@@ -373,15 +370,12 @@
       <div class="zpay-action-btn" onclick="openZPaySend()"><div class="zpay-icon send-icon">↑</div><span>送金</span></div>
       <div class="zpay-action-btn" onclick="openZPayHistory()"><div class="zpay-icon history-icon">≡</div><span>履歴</span></div>
     </div>
-    <div class="zpay-barcode-area">
-      <p class="barcode-hint">レジでこの画面を提示してください</p><div class="fake-barcode"></div>
-    </div>
   </div>
 
   <div id="zpay-charge" class="zpay-page" style="display: none;">
-    <h2 class="zpay-page-title">ウォレットチャージ</h2>
+    <h2 class="zpay-page-title">エピソードキー入力</h2>
     <div style="background: rgba(255,255,255,0.05); border: 1px solid #333; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: left; font-size: 12px; color: #ccc; line-height: 1.5; width: 100%;">
-      <p style="color: #ff6b6b; font-weight: bold; font-size: 11px;">【重要】Z-Pay残高の有効期限は180日とする。</p>
+      <p style="color: #ff6b6b; font-weight: bold; font-size: 11px;">【重要】ストーリーポイントの有効期限は180日とする。</p>
     </div>
     <div class="zpay-input-wrap"><input type="text" id="zpay-code-input" placeholder="XXXX-XXXX-XXXX"></div>
     <button class="zpay-primary-btn" onclick="executeCharge()">チャージを実行</button>
@@ -395,7 +389,7 @@
         </select>
     </div>
     <div class="zpay-input-wrap large-input">
-      <span class="zpay-currency">¥</span>
+      <span class="zpay-currency">pt</span>
       <input type="number" id="zpay-amount-input" placeholder="0" class="zpay-amount">
     </div>
     <button class="zpay-primary-btn" onclick="executeSend()">スワイプして送金</button>
@@ -614,7 +608,7 @@ window.openZPayHistory = () => {
     list.innerHTML = `<p style="text-align:center; color:#888; margin-top:20px;">取引履歴がありません</p>`; return; 
   } 
   list.innerHTML = state.zpayHistory.slice().reverse().map(h => 
-    `<div class="history-item"><div class="history-info"><span class="history-title">${escapeHTML(h.desc)}</span><span class="history-date">${h.date}</span></div><span class="history-amount ${h.type === 'charge' ? 'plus' : 'minus'}">${h.type === 'charge' ? '+' : '-'}¥${h.amount.toLocaleString()}</span></div>`
+    `<div class="history-item"><div class="history-info"><span class="history-title">${escapeHTML(h.desc)}</span><span class="history-date">${h.date}</span></div><span class="history-amount ${h.type === 'charge' ? 'plus' : 'minus'}">${h.type === 'charge' ? '+' : '-'}${h.amount.toLocaleString()} pt</span></div>`
   ).join(''); 
 };
 
@@ -653,7 +647,7 @@ window.executeCharge = async () => {
     state.zpayBalance += 10000; 
     state.zpayHistory.push({ type: 'charge', amount: 10000, desc: 'ギフトコード チャージ', date: getTime() }); 
     state.usedCodes.push(code);
-    showToast("10,000円をチャージしました"); 
+    showToast("10,000 pt をチャージしました"); 
     document.getElementById('zpay-code-input').value = ""; 
     save(); openZPay(); 
   } else { 
@@ -671,14 +665,14 @@ window.openZPaySend = () => {
 
 window.executeSend = () => {
   const amount = parseInt(document.getElementById('zpay-amount-input').value);
-  if(isNaN(amount) || amount <= 0) return showToast("正しい金額を入力してください", true);
-  if(amount > state.zpayBalance) return showToast("残高が不足しています", true);
+  if(isNaN(amount) || amount <= 0) return showToast("正しい数値を入力してください", true);
+  if(amount > state.zpayBalance) return showToast("ストーリーポイントが不足しています", true);
   const targetRoom = document.getElementById('zpay-recipient-select').value;
   let targetName = targetRoom === 'hina' ? state.names.ai : (targetRoom === 'bf' ? state.names.bf : "グループ");
   
   state.zpayBalance -= amount;
   state.zpayHistory.push({ type: 'send', amount: amount, desc: `${targetName} 宛に送金`, date: getTime() });
-  showToast(`¥${amount.toLocaleString()} の送金が完了しました`);
+  showToast(`${amount.toLocaleString()} pt の送金が完了しました`);
   document.getElementById('zpay-amount-input').value = ""; closeZPay();
 
   state.messages[targetRoom].push({ role:'user', name:state.names.user, amount: amount, isPayment: true, time:getTime() });
@@ -693,8 +687,8 @@ window.executeSend = () => {
         } else {
             isProcessing = true; showTyping(targetRoom, () => {
               const remain = 10000 - state.tributePaid;
-              state.messages[targetRoom].push({ role:'ai', name:state.names.ai, icon:state.aiIcon, text:`足りないよ。あと${remain.toLocaleString()}円送って`, time:getTime() });
-              isProcessing = false; if(currentRoom === targetRoom) render(); triggerEffects(state.names.ai, `足りないよ。あと${remain.toLocaleString()}円送って`, false); save();
+              state.messages[targetRoom].push({ role:'ai', name:state.names.ai, icon:state.aiIcon, text:`足りないよ。あと${remain.toLocaleString()}送って`, time:getTime() });
+              isProcessing = false; if(currentRoom === targetRoom) render(); triggerEffects(state.names.ai, `足りないよ。あと${remain.toLocaleString()}送って`, false); save();
             });
         }
     } else if(state.storyStep === 13 && targetRoom === 'group') {
@@ -705,13 +699,13 @@ window.executeSend = () => {
         } else {
             isProcessing = true; showTyping(targetRoom, () => {
               const remain = 5000 - state.tributePaidGroup;
-              state.messages[targetRoom].push({ role:'ai', name:state.names.ai, icon:state.aiIcon, text:`足りないよ。あと${remain.toLocaleString()}円送って笑`, time:getTime() });
-              isProcessing = false; if(currentRoom === targetRoom) render(); triggerEffects(state.names.ai, `足りないよ。あと${remain.toLocaleString()}円送って笑`, false); save();
+              state.messages[targetRoom].push({ role:'ai', name:state.names.ai, icon:state.aiIcon, text:`足りないよ。あと${remain.toLocaleString()}送って笑`, time:getTime() });
+              isProcessing = false; if(currentRoom === targetRoom) render(); triggerEffects(state.names.ai, `足りないよ。あと${remain.toLocaleString()}送って笑`, false); save();
             });
         }
     } else {
         isProcessing = true; showTyping(targetRoom, () => {
-          let resText = targetRoom === 'bf' ? "急に金送ってきてどうした？まぁ貰っとくわｗ" : "お金ありがとうｗ";
+          let resText = targetRoom === 'bf' ? "急にポイント送ってきてどうした？まぁ貰っとくわｗ" : "ありがとうｗ";
           let resRole = targetRoom === 'bf' ? 'bf' : 'ai';
           let resIcon = targetRoom === 'bf' ? state.bfIcon : state.aiIcon;
           let resName = targetRoom === 'bf' ? state.names.bf : state.names.ai;
@@ -918,7 +912,7 @@ function checkUIState() {
         ]);
         else if (state.storyStep === 3) showChoices([
             {text:"そんなの酷すぎるよ……", next:'branch_refusal'},
-            {text:"分かった、PayPayで送るから金額を教えて", next:'branch_accept'},
+            {text:"分かった、ポイント送るから教えて", next:'branch_accept'},
             {text:"他の男との食事代出すなんて、、、", next:'branch_refusal'}
         ]);
         else if (state.storyStep === 3.5) showChoices([
@@ -963,8 +957,8 @@ function checkUIState() {
         ]);
         else if (state.storyStep === 12) showChoices([
             {text:"おいくらでしょうか？", next:'g_step5'},
-            {text:"何円お貢ぎすればいいですか？", next:'g_step5'},
-            {text:"5000円で大丈夫ですか？", next:'g_step5'}
+            {text:"何ポイントお貢ぎすればいいですか？", next:'g_step5'},
+            {text:"5000ポイントで大丈夫ですか？", next:'g_step5'}
         ]);
         else if (state.storyStep === 14) showChoices([
             {text:"教えてください、、", next:'g_step6_1'},
@@ -1011,7 +1005,7 @@ function render() {
     const clickAttr = isU ? '' : `onclick="openProfile('${m.role}')"`;
     
     if(m.isPayment) { 
-        chatDisplay.innerHTML += `<div class="message-wrapper user-wrapper"><div class="meta-info">${isRead?'<span class="read-mark">既読</span>':''}<span>${m.time}</span></div><div class="message-content"><div class="payment-bubble"><div class="payment-header">💎 Z-Pay 送金完了</div><div class="payment-body"><div class="payment-amount">¥${m.amount.toLocaleString()}</div><div class="payment-desc">送金しました</div></div></div></div><img src="${icon}" class="chat-icon"></div>`;
+        chatDisplay.innerHTML += `<div class="message-wrapper user-wrapper"><div class="meta-info">${isRead?'<span class="read-mark">既読</span>':''}<span>${m.time}</span></div><div class="message-content"><div class="payment-bubble"><div class="payment-header">💎 Z-Pay 送金完了</div><div class="payment-body"><div class="payment-amount">${m.amount.toLocaleString()} pt</div><div class="payment-desc">送金しました</div></div></div></div><img src="${icon}" class="chat-icon"></div>`;
     } else { 
         chatDisplay.innerHTML += `<div class="message-wrapper ${wrapper}">${isU ? `<div class="meta-info">${isRead?'<span class="read-mark">既読</span>':''}<span>${m.time}</span></div>` : `<img src="${icon}" class="chat-icon" ${clickAttr}>`}<div class="message-content">${isU ? '' : `<div class="ai-name">${safeName}</div>`}<div class="message ${cls}">${safeText}</div></div>${isU ? `<img src="${icon}" class="chat-icon">` : `<span>${m.time}</span>`}</div>`; 
     }
@@ -1074,7 +1068,7 @@ function aiReply(stepKey) {
     else if(stepKey === 'step3') { res.text = `じゃあ${AFP}への気持ち、今すぐ形で見せてよ。\n今からその人と、ずっと行きたかった高級なお店でディナーするんだけど、そのお金${UN}くんが払いなよ。\nそれができたら、ブロックするの少しだけ待ってあげてもいいよ？`; state.storyStep = 3; }
     else if(stepKey === 'branch_refusal') { res.text = "じゃあもう二度と会えないね〜ばいばい笑"; state.storyStep = 3.5; }
     else if(stepKey === 'branch_accept') { res.text = "とりあえず1万もらおうかな"; state.storyStep = 4; }
-    else if(stepKey === 'payment_done') { res.text = `1万円はありがとうだけど${UN}くんには残念な報告するね。\nちょうど今目の前で${BN}くんから告白されて、付き合うことになったんだよね〜\nだから${UN}くんは${AFP}のATM兼奴隷として使ってあげる笑\nいいよね？`; state.storyStep = 5; }
+    else if(stepKey === 'payment_done') { res.text = `ポイントはありがとうだけど${UN}くんには残念な報告するね。\nちょうど今目の前で${BN}くんから告白されて、付き合うことになったんだよね〜\nだから${UN}くんは${AFP}のATM兼奴隷として使ってあげる笑\nいいよね？`; state.storyStep = 5; }
     else if(stepKey === 'step5_1') { res.text = `そだよ。${UN}くんよりイケメンでかっこいいの！`; state.storyStep = 5.1; }
     else if(stepKey === 'step5_1_1') { res.text = `で、奴隷になるの？ならないの？どっち？`; state.storyStep = 5.3; }
     else if(stepKey === 'step5_2') { res.text = `${AN}のためにお金貢いだり、アッシーとして使われるの。幸せでしょ？`; state.storyStep = 5.3; }
@@ -1145,7 +1139,7 @@ function aiReply(stepKey) {
                 setTimeout(() => {
                     showTyping(currentRoom, () => {
                         let res3 = { role:'ai', name:state.names.ai, icon:state.aiIcon, time:getTime() };
-                        res3.text = `ねね、${UN}くんのお金なにに使われるか分かる？`;
+                        res3.text = `ねね、${UN}くんのポイントなにに使われるか分かる？`;
                         state.storyStep = 14;
                         state.messages[currentRoom].push(res3); render(); triggerEffects(res3.name, res3.text, false); 
                         isProcessing = false; save(); checkUIState();
