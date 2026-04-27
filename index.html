@@ -461,6 +461,7 @@ let currentRoom = 'hina', isFirstTime = true, isProcessing = false;
 let currentProfileRole = ''; let callTimeout1, callTimeout2; 
 let isEditingSetup = false;
 
+// ★Z-Payの初期残高は15000Zに設定されています
 let state = { names: { user: "", ai: "", bf: "" }, firstPerson: "僕", aiFirstPerson: "私", userIcon: defaultUserIcon, aiIcon: defaultAiIcon, bfIcon: bfIcon, storyStep: 0, messages: { hina: [], group: [], bf: [] }, unread: { hina: 0, group: 0, bf: 0 }, isInvited: false, isJoined: false, isBfUnlocked: false, zpayBalance: 15000, zpayHistory: [], tributePaid: 0, tributePaidGroup: 0 };
 
 let isAutoMode = true;
