@@ -254,6 +254,7 @@
     <h2 class="disclaimer-title">⚠️ 免責事項</h2>
     <p class="disclaimer-text">• これはフィクションのストーリーを体験するためのエンターテイメントアプリです。</p>
     <p class="disclaimer-text">• 登場する人物やZ-Payなどの名称はすべて架空のものであり、現実の金銭的価値はありません。</p>
+    <p class="disclaimer-text">• 本アプリ内のストーリーポイントは現金への払い戻しや換金、他サービスでの利用は一切できません。</p>
     <button id="disclaimer-btn" class="disclaimer-btn">同意してはじめる</button>
   </div>
 </div>
@@ -366,8 +367,8 @@
       <div class="zpay-card-chip"></div>
     </div>
     <div class="zpay-actions">
-      <div class="zpay-action-btn" onclick="openZPayCharge()"><div class="zpay-icon charge-icon">＋</div><span>チャージ</span></div>
-      <div class="zpay-action-btn" onclick="openZPaySend()"><div class="zpay-icon send-icon">↑</div><span>送金</span></div>
+      <div class="zpay-action-btn" onclick="openZPayCharge()"><div class="zpay-icon charge-icon">＋</div><span>キー入力</span></div>
+      <div class="zpay-action-btn" onclick="openZPaySend()"><div class="zpay-icon send-icon">↑</div><span>ポイント使用</span></div>
       <div class="zpay-action-btn" onclick="openZPayHistory()"><div class="zpay-icon history-icon">≡</div><span>履歴</span></div>
     </div>
   </div>
@@ -382,9 +383,9 @@
   </div>
 
   <div id="zpay-send" class="zpay-page" style="display: none;">
-    <h2 class="zpay-page-title">P2P 送金</h2>
+    <h2 class="zpay-page-title">ポイントを使用</h2>
     <div class="zpay-recipient-wrap">
-      <label class="zpay-recipient-label">送金先を選択</label>
+      <label class="zpay-recipient-label">使用先を選択</label>
       <select id="zpay-recipient-select" class="zpay-select">
         </select>
     </div>
@@ -392,7 +393,7 @@
       <span class="zpay-currency">pt</span>
       <input type="number" id="zpay-amount-input" placeholder="0" class="zpay-amount">
     </div>
-    <button class="zpay-primary-btn" onclick="executeSend()">スワイプして送金</button>
+    <button class="zpay-primary-btn" onclick="executeSend()">ポイントを使用する</button>
   </div>
 
   <div id="zpay-history" class="zpay-page" style="display: none;">
@@ -671,8 +672,8 @@ window.executeSend = () => {
   let targetName = targetRoom === 'hina' ? state.names.ai : (targetRoom === 'bf' ? state.names.bf : "グループ");
   
   state.zpayBalance -= amount;
-  state.zpayHistory.push({ type: 'send', amount: amount, desc: `${targetName} 宛に送金`, date: getTime() });
-  showToast(`${amount.toLocaleString()} pt の送金が完了しました`);
+  state.zpayHistory.push({ type: 'send', amount: amount, desc: `${targetName} 宛に使用`, date: getTime() });
+  showToast(`${amount.toLocaleString()} pt を使用しました`);
   document.getElementById('zpay-amount-input').value = ""; closeZPay();
 
   state.messages[targetRoom].push({ role:'user', name:state.names.user, amount: amount, isPayment: true, time:getTime() });
@@ -687,8 +688,8 @@ window.executeSend = () => {
         } else {
             isProcessing = true; showTyping(targetRoom, () => {
               const remain = 10000 - state.tributePaid;
-              state.messages[targetRoom].push({ role:'ai', name:state.names.ai, icon:state.aiIcon, text:`足りないよ。あと${remain.toLocaleString()}送って`, time:getTime() });
-              isProcessing = false; if(currentRoom === targetRoom) render(); triggerEffects(state.names.ai, `足りないよ。あと${remain.toLocaleString()}送って`, false); save();
+              state.messages[targetRoom].push({ role:'ai', name:state.names.ai, icon:state.aiIcon, text:`足りないよ。あと${remain.toLocaleString()}円送って`, time:getTime() });
+              isProcessing = false; if(currentRoom === targetRoom) render(); triggerEffects(state.names.ai, `足りないよ。あと${remain.toLocaleString()}円送って`, false); save();
             });
         }
     } else if(state.storyStep === 13 && targetRoom === 'group') {
@@ -699,13 +700,13 @@ window.executeSend = () => {
         } else {
             isProcessing = true; showTyping(targetRoom, () => {
               const remain = 5000 - state.tributePaidGroup;
-              state.messages[targetRoom].push({ role:'ai', name:state.names.ai, icon:state.aiIcon, text:`足りないよ。あと${remain.toLocaleString()}送って笑`, time:getTime() });
-              isProcessing = false; if(currentRoom === targetRoom) render(); triggerEffects(state.names.ai, `足りないよ。あと${remain.toLocaleString()}送って笑`, false); save();
+              state.messages[targetRoom].push({ role:'ai', name:state.names.ai, icon:state.aiIcon, text:`足りないよ。あと${remain.toLocaleString()}円送って笑`, time:getTime() });
+              isProcessing = false; if(currentRoom === targetRoom) render(); triggerEffects(state.names.ai, `足りないよ。あと${remain.toLocaleString()}円送って笑`, false); save();
             });
         }
     } else {
         isProcessing = true; showTyping(targetRoom, () => {
-          let resText = targetRoom === 'bf' ? "急にポイント送ってきてどうした？まぁ貰っとくわｗ" : "ありがとうｗ";
+          let resText = targetRoom === 'bf' ? "急にお金送ってきてどうした？まぁ貰っとくわｗ" : "お金ありがとうｗ";
           let resRole = targetRoom === 'bf' ? 'bf' : 'ai';
           let resIcon = targetRoom === 'bf' ? state.bfIcon : state.aiIcon;
           let resName = targetRoom === 'bf' ? state.names.bf : state.names.ai;
@@ -912,7 +913,7 @@ function checkUIState() {
         ]);
         else if (state.storyStep === 3) showChoices([
             {text:"そんなの酷すぎるよ……", next:'branch_refusal'},
-            {text:"分かった、ポイント送るから教えて", next:'branch_accept'},
+            {text:"分かった、お金送るから金額を教えて", next:'branch_accept'},
             {text:"他の男との食事代出すなんて、、、", next:'branch_refusal'}
         ]);
         else if (state.storyStep === 3.5) showChoices([
@@ -957,8 +958,8 @@ function checkUIState() {
         ]);
         else if (state.storyStep === 12) showChoices([
             {text:"おいくらでしょうか？", next:'g_step5'},
-            {text:"何ポイントお貢ぎすればいいですか？", next:'g_step5'},
-            {text:"5000ポイントで大丈夫ですか？", next:'g_step5'}
+            {text:"何円お貢ぎすればいいですか？", next:'g_step5'},
+            {text:"5000円で大丈夫ですか？", next:'g_step5'}
         ]);
         else if (state.storyStep === 14) showChoices([
             {text:"教えてください、、", next:'g_step6_1'},
@@ -1005,7 +1006,7 @@ function render() {
     const clickAttr = isU ? '' : `onclick="openProfile('${m.role}')"`;
     
     if(m.isPayment) { 
-        chatDisplay.innerHTML += `<div class="message-wrapper user-wrapper"><div class="meta-info">${isRead?'<span class="read-mark">既読</span>':''}<span>${m.time}</span></div><div class="message-content"><div class="payment-bubble"><div class="payment-header">💎 Z-Pay 送金完了</div><div class="payment-body"><div class="payment-amount">${m.amount.toLocaleString()} pt</div><div class="payment-desc">送金しました</div></div></div></div><img src="${icon}" class="chat-icon"></div>`;
+        chatDisplay.innerHTML += `<div class="message-wrapper user-wrapper"><div class="meta-info">${isRead?'<span class="read-mark">既読</span>':''}<span>${m.time}</span></div><div class="message-content"><div class="payment-bubble"><div class="payment-header">💎 ポイント使用完了</div><div class="payment-body"><div class="payment-amount">${m.amount.toLocaleString()} pt</div><div class="payment-desc">ポイントを使用しました</div></div></div></div><img src="${icon}" class="chat-icon"></div>`;
     } else { 
         chatDisplay.innerHTML += `<div class="message-wrapper ${wrapper}">${isU ? `<div class="meta-info">${isRead?'<span class="read-mark">既読</span>':''}<span>${m.time}</span></div>` : `<img src="${icon}" class="chat-icon" ${clickAttr}>`}<div class="message-content">${isU ? '' : `<div class="ai-name">${safeName}</div>`}<div class="message ${cls}">${safeText}</div></div>${isU ? `<img src="${icon}" class="chat-icon">` : `<span>${m.time}</span>`}</div>`; 
     }
@@ -1068,7 +1069,7 @@ function aiReply(stepKey) {
     else if(stepKey === 'step3') { res.text = `じゃあ${AFP}への気持ち、今すぐ形で見せてよ。\n今からその人と、ずっと行きたかった高級なお店でディナーするんだけど、そのお金${UN}くんが払いなよ。\nそれができたら、ブロックするの少しだけ待ってあげてもいいよ？`; state.storyStep = 3; }
     else if(stepKey === 'branch_refusal') { res.text = "じゃあもう二度と会えないね〜ばいばい笑"; state.storyStep = 3.5; }
     else if(stepKey === 'branch_accept') { res.text = "とりあえず1万もらおうかな"; state.storyStep = 4; }
-    else if(stepKey === 'payment_done') { res.text = `ポイントはありがとうだけど${UN}くんには残念な報告するね。\nちょうど今目の前で${BN}くんから告白されて、付き合うことになったんだよね〜\nだから${UN}くんは${AFP}のATM兼奴隷として使ってあげる笑\nいいよね？`; state.storyStep = 5; }
+    else if(stepKey === 'payment_done') { res.text = `お金はありがとうだけど${UN}くんには残念な報告するね。\nちょうど今目の前で${BN}くんから告白されて、付き合うことになったんだよね〜\nだから${UN}くんは${AFP}のATM兼奴隷として使ってあげる笑\nいいよね？`; state.storyStep = 5; }
     else if(stepKey === 'step5_1') { res.text = `そだよ。${UN}くんよりイケメンでかっこいいの！`; state.storyStep = 5.1; }
     else if(stepKey === 'step5_1_1') { res.text = `で、奴隷になるの？ならないの？どっち？`; state.storyStep = 5.3; }
     else if(stepKey === 'step5_2') { res.text = `${AN}のためにお金貢いだり、アッシーとして使われるの。幸せでしょ？`; state.storyStep = 5.3; }
@@ -1139,7 +1140,7 @@ function aiReply(stepKey) {
                 setTimeout(() => {
                     showTyping(currentRoom, () => {
                         let res3 = { role:'ai', name:state.names.ai, icon:state.aiIcon, time:getTime() };
-                        res3.text = `ねね、${UN}くんのポイントなにに使われるか分かる？`;
+                        res3.text = `ねね、${UN}くんのお金なにに使われるか分かる？`;
                         state.storyStep = 14;
                         state.messages[currentRoom].push(res3); render(); triggerEffects(res3.name, res3.text, false); 
                         isProcessing = false; save(); checkUIState();
@@ -1224,7 +1225,7 @@ function updateSidebarDisplay() {
   ['hina', 'group', 'bf'].forEach(id => { 
     const msgs = state.messages[id]; 
     if (msgs && msgs.length > 0) { 
-      let prevText = msgs[msgs.length - 1].isPayment ? "送金しました" : msgs[msgs.length - 1].text; 
+      let prevText = msgs[msgs.length - 1].isPayment ? "ポイントを使用しました" : msgs[msgs.length - 1].text; 
       document.getElementById(`list-preview-${id}`).innerText = prevText; 
       document.getElementById(`list-time-${id}`).innerText = msgs[msgs.length - 1].time; 
     } 
