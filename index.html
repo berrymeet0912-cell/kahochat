@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>チャットアプリ</title>
   <style>
-    .zpay-history-list { width: 100%; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; max-height: 60vh; padding-bottom: 20px; }
+    .zpoint-history-list { width: 100%; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; max-height: 60vh; padding-bottom: 20px; }
     .history-item { background: #1f2833; border-radius: 12px; padding: 15px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #333; }
     .history-info { display: flex; flex-direction: column; gap: 6px; }
     .history-title { font-size: 14px; font-weight: bold; color: #fff; }
@@ -22,10 +22,10 @@
     .notif-text { font-size: 13px; color: #aaa; word-wrap: break-word; }
     @keyframes slideDown { from { transform: translateY(-150px); } to { transform: translateY(0); } }
 
-    .zpay-recipient-wrap { background: #1f2833; padding: 15px 20px; border-radius: 12px; width: 100%; margin-bottom: 25px; border: 1px solid #333; display: flex; flex-direction: column; gap: 8px; }
-    .zpay-recipient-label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
-    .zpay-select { width: 100%; background: transparent; border: none; color: #66fcf1; font-size: 18px; font-weight: bold; outline: none; cursor: pointer; appearance: none; -webkit-appearance: none; }
-    .zpay-select option { background: #111; color: white; }
+    .zpoint-recipient-wrap { background: #1f2833; padding: 15px 20px; border-radius: 12px; width: 100%; margin-bottom: 25px; border: 1px solid #333; display: flex; flex-direction: column; gap: 8px; }
+    .zpoint-recipient-label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+    .zpoint-select { width: 100%; background: transparent; border: none; color: #66fcf1; font-size: 18px; font-weight: bold; outline: none; cursor: pointer; appearance: none; -webkit-appearance: none; }
+    .zpoint-select option { background: #111; color: white; }
 
     .toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
     .toast { background: rgba(30, 30, 30, 0.95); color: white; padding: 12px 24px; border-radius: 30px; font-size: 14px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3); animation: toastFadeIn 0.3s, toastFadeOut 0.3s 2.7s forwards; backdrop-filter: blur(5px); border: 1px solid #444; text-align: center; }
@@ -33,30 +33,30 @@
     @keyframes toastFadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes toastFadeOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
 
-    .zpay-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b0c10; z-index: 4000; display: flex; flex-direction: column; font-family: -apple-system, sans-serif; animation: slideUp 0.3s ease-out; color: white; }
+    .zpoint-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b0c10; z-index: 4000; display: flex; flex-direction: column; font-family: -apple-system, sans-serif; animation: slideUp 0.3s ease-out; color: white; }
     @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-    .zpay-header { background: #1f2833; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
-    .zpay-header-left { display: flex; align-items: center; gap: 10px; }
-    .zpay-logo { font-weight: 900; font-size: 20px; color: #66fcf1; letter-spacing: 1px; font-style: italic; }
-    .zpay-badge { background: #45a29e; color: #0b0c10; font-size: 9px; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
-    .zpay-close { background: none; border: none; color: #c5c6c7; font-size: 24px; cursor: pointer; }
-    .zpay-page { padding: 20px; flex: 1; display: flex; flex-direction: column; align-items: center; }
-    .zpay-card { background: linear-gradient(135deg, #1f2833 0%, #111 100%); border-radius: 20px; width: 100%; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; overflow: hidden; margin-bottom: 25px; border: 1px solid #333; }
-    .zpay-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(102,252,241,0.1) 0%, transparent 60%); pointer-events: none; }
-    .zpay-label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-    .zpay-balance { font-size: 40px; margin: 0; color: #fff; font-weight: 300; letter-spacing: 2px; display: flex; align-items: baseline; }
-    .zpay-card-chip { width: 40px; height: 30px; background: linear-gradient(135deg, #d4af37, #aa7700); border-radius: 5px; position: absolute; right: 25px; top: 30px; opacity: 0.8; }
-    .zpay-actions { display: flex; gap: 20px; width: 100%; justify-content: center; margin-bottom: 30px; }
-    .zpay-action-btn { display: flex; flex-direction: column; align-items: center; gap: 10px; color: #c5c6c7; font-size: 12px; cursor: pointer; flex: 1; }
-    .zpay-icon { width: 55px; height: 55px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #0b0c10; font-weight: bold; }
+    .zpoint-header { background: #1f2833; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
+    .zpoint-header-left { display: flex; align-items: center; gap: 10px; }
+    .zpoint-logo { font-weight: 900; font-size: 20px; color: #66fcf1; letter-spacing: 1px; font-style: italic; }
+    .zpoint-badge { background: #45a29e; color: #0b0c10; font-size: 9px; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+    .zpoint-close { background: none; border: none; color: #c5c6c7; font-size: 24px; cursor: pointer; }
+    .zpoint-page { padding: 20px; flex: 1; display: flex; flex-direction: column; align-items: center; }
+    .zpoint-card { background: linear-gradient(135deg, #1f2833 0%, #111 100%); border-radius: 20px; width: 100%; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; overflow: hidden; margin-bottom: 25px; border: 1px solid #333; }
+    .zpoint-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(102,252,241,0.1) 0%, transparent 60%); pointer-events: none; }
+    .zpoint-label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+    .zpoint-balance { font-size: 40px; margin: 0; color: #fff; font-weight: 300; letter-spacing: 2px; display: flex; align-items: baseline; }
+    .zpoint-card-chip { width: 40px; height: 30px; background: linear-gradient(135deg, #d4af37, #aa7700); border-radius: 5px; position: absolute; right: 25px; top: 30px; opacity: 0.8; }
+    .zpoint-actions { display: flex; gap: 20px; width: 100%; justify-content: center; margin-bottom: 30px; }
+    .zpoint-action-btn { display: flex; flex-direction: column; align-items: center; gap: 10px; color: #c5c6c7; font-size: 12px; cursor: pointer; flex: 1; }
+    .zpoint-icon { width: 55px; height: 55px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #0b0c10; font-weight: bold; }
     .send-icon { background: #45a29e; box-shadow: 0 4px 15px rgba(69,162,158,0.3); }
     .history-icon { background: #1f2833; color: #66fcf1; border: 1px solid #333; }
-    .zpay-page-title { color: #fff; margin-bottom: 10px; font-size: 20px; font-weight: 300; }
-    .zpay-input-wrap { width: 100%; background: #1f2833; border-radius: 12px; border: 1px solid #333; display: flex; align-items: center; padding: 12px 20px; margin-bottom: 30px; transition: 0.3s; }
-    .zpay-input-wrap:focus-within { border-color: #66fcf1; box-shadow: 0 0 10px rgba(102,252,241,0.2); }
-    .zpay-currency { font-size: 24px; color: #66fcf1; margin-right: 15px; }
-    .zpay-amount { border: none; outline: none; width: 100%; font-size: 36px; font-weight: 300; color: white; background: transparent; }
-    .zpay-primary-btn { background: linear-gradient(90deg, #45a29e, #66fcf1); color: #0b0c10; border: none; width: 100%; padding: 18px; border-radius: 30px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 20px rgba(102,252,241,0.4); }
+    .zpoint-page-title { color: #fff; margin-bottom: 10px; font-size: 20px; font-weight: 300; }
+    .zpoint-input-wrap { width: 100%; background: #1f2833; border-radius: 12px; border: 1px solid #333; display: flex; align-items: center; padding: 12px 20px; margin-bottom: 30px; transition: 0.3s; }
+    .zpoint-input-wrap:focus-within { border-color: #66fcf1; box-shadow: 0 0 10px rgba(102,252,241,0.2); }
+    .zpoint-currency { font-size: 24px; color: #66fcf1; margin-right: 15px; }
+    .zpoint-amount { border: none; outline: none; width: 100%; font-size: 36px; font-weight: 300; color: white; background: transparent; }
+    .zpoint-primary-btn { background: linear-gradient(90deg, #45a29e, #66fcf1); color: #0b0c10; border: none; width: 100%; padding: 18px; border-radius: 30px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 20px rgba(102,252,241,0.4); }
     .payment-bubble { background: #1f2833; color: #fff; border-radius: 16px; overflow: hidden; width: 220px; border: 1px solid #333; }
     .payment-header { background: #0b0c10; color: #66fcf1; padding: 12px; font-weight: bold; font-size: 11px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #222; }
     .payment-body { padding: 20px 15px; text-align: center; }
@@ -250,8 +250,8 @@
   <div class="disclaimer-card">
     <h2 class="disclaimer-title">⚠️ 免責事項</h2>
     <p class="disclaimer-text">• これはフィクションのストーリーを体験するためのエンターテイメントアプリです。</p>
-    <p class="disclaimer-text">• 登場する人物やZ-Payなどの名称はすべて架空のものであり、現実の金銭的価値はありません。</p>
-    <p class="disclaimer-text">• 本アプリ内のZ-Pay残高(Z)は現金への払い戻しや換金、他サービスでの利用は一切できません。</p>
+    <p class="disclaimer-text">• 登場する人物やZ-Pointなどの名称はすべて架空のものであり、現実の金銭的価値はありません。</p>
+    <p class="disclaimer-text">• 本アプリ内のZ-Point残高(Z)は現金への払い戻しや換金、他サービスでの利用は一切できません。</p>
     <p class="disclaimer-text">• このアプリ内のZはフィクション上のポイントであり、現実の通貨・仮想通貨・電子マネーではありません。</p>
     <button id="disclaimer-btn" class="disclaimer-btn">同意してはじめる</button>
   </div>
@@ -351,42 +351,42 @@
 
 <div id="toast-container" class="toast-container"></div>
 
-<div id="zpay-screen" class="zpay-wrapper" style="display: none;">
-  <div class="zpay-header">
-    <div class="zpay-header-left"><span class="zpay-logo">Z-Pay</span><span class="zpay-badge">PREMIUM</span></div>
-    <button class="zpay-close" onclick="closeZPay()">✕</button>
+<div id="zpoint-screen" class="zpoint-wrapper" style="display: none;">
+  <div class="zpoint-header">
+    <div class="zpoint-header-left"><span class="zpoint-logo">Z-Point</span><span class="zpoint-badge">PREMIUM</span></div>
+    <button class="zpoint-close" onclick="closeZPoint()">✕</button>
   </div>
 
-  <div id="zpay-home" class="zpay-page">
-    <div class="zpay-card">
-      <p class="zpay-label">Total Balance</p>
-      <h1 class="zpay-balance"><span id="zpay-balance-display">0</span><span style="font-size: 24px; margin-left: 4px;">Z</span></h1>
-      <p style="font-size: 10px; color: #888; margin-top: 8px; text-align: right;">※Z-Pay残高の有効期限は180日とする<br>※このアプリ内のZはフィクション上のポイントであり、現実の通貨・仮想通貨・電子マネーではありません。</p>
-      <div class="zpay-card-chip"></div>
+  <div id="zpoint-home" class="zpoint-page">
+    <div class="zpoint-card">
+      <p class="zpoint-label">Total Balance</p>
+      <h1 class="zpoint-balance"><span id="zpoint-balance-display">0</span><span style="font-size: 24px; margin-left: 4px;">Z</span></h1>
+      <p style="font-size: 10px; color: #888; margin-top: 8px; text-align: right;">※Z-Point残高の有効期限は180日とする<br>※このアプリ内のZはフィクション上のポイントであり、現実の通貨・仮想通貨・電子マネーではありません。</p>
+      <div class="zpoint-card-chip"></div>
     </div>
-    <div class="zpay-actions">
-      <div class="zpay-action-btn" onclick="openZPaySend()"><div class="zpay-icon send-icon">↑</div><span>Zをプレゼント</span></div>
-      <div class="zpay-action-btn" onclick="openZPayHistory()"><div class="zpay-icon history-icon">≡</div><span>履歴</span></div>
+    <div class="zpoint-actions">
+      <div class="zpoint-action-btn" onclick="openZPointSend()"><div class="zpoint-icon send-icon">↑</div><span>Zをプレゼント</span></div>
+      <div class="zpoint-action-btn" onclick="openZPointHistory()"><div class="zpoint-icon history-icon">≡</div><span>履歴</span></div>
     </div>
   </div>
 
-  <div id="zpay-send" class="zpay-page" style="display: none;">
-    <h2 class="zpay-page-title">Zをプレゼント</h2>
-    <div class="zpay-recipient-wrap">
-      <label class="zpay-recipient-label">プレゼントする相手を選択</label>
-      <select id="zpay-recipient-select" class="zpay-select">
+  <div id="zpoint-send" class="zpoint-page" style="display: none;">
+    <h2 class="zpoint-page-title">Zをプレゼント</h2>
+    <div class="zpoint-recipient-wrap">
+      <label class="zpoint-recipient-label">プレゼントする相手を選択</label>
+      <select id="zpoint-recipient-select" class="zpoint-select">
         </select>
     </div>
-    <div class="zpay-input-wrap large-input">
-      <span class="zpay-currency">Z</span>
-      <input type="number" id="zpay-amount-input" placeholder="0" class="zpay-amount">
+    <div class="zpoint-input-wrap large-input">
+      <span class="zpoint-currency">Z</span>
+      <input type="number" id="zpoint-amount-input" placeholder="0" class="zpoint-amount">
     </div>
-    <button class="zpay-primary-btn" onclick="executeSend()">スワイプしてZをプレゼント</button>
+    <button class="zpoint-primary-btn" onclick="executeSend()">スワイプしてZをプレゼント</button>
   </div>
 
-  <div id="zpay-history" class="zpay-page" style="display: none;">
-    <h2 class="zpay-page-title">履歴</h2>
-    <div class="zpay-history-list" id="zpay-history-list"></div>
+  <div id="zpoint-history" class="zpoint-page" style="display: none;">
+    <h2 class="zpoint-page-title">履歴</h2>
+    <div class="zpoint-history-list" id="zpoint-history-list"></div>
   </div>
 </div>
 
@@ -411,7 +411,7 @@
       <div id="choice-area" class="choice-area" style="display: none;"></div>
       
       <div class="input-area" id="standard-input">
-        <button id="plus-btn" class="plus-btn" onclick="openZPay()">＋</button>
+        <button id="plus-btn" class="plus-btn" onclick="openZPoint()">＋</button>
         <input type="text" id="message-input" placeholder="メッセージ...">
         <button id="send-btn">送信</button>
       </div>
@@ -461,8 +461,8 @@ let currentRoom = 'hina', isFirstTime = true, isProcessing = false;
 let currentProfileRole = ''; let callTimeout1, callTimeout2; 
 let isEditingSetup = false;
 
-// ★Z-Payの初期残高は15000Zに設定されています
-let state = { names: { user: "", ai: "", bf: "" }, firstPerson: "僕", aiFirstPerson: "私", userIcon: defaultUserIcon, aiIcon: defaultAiIcon, bfIcon: bfIcon, storyStep: 0, messages: { hina: [], group: [], bf: [] }, unread: { hina: 0, group: 0, bf: 0 }, isInvited: false, isJoined: false, isBfUnlocked: false, zpayBalance: 15000, zpayHistory: [], tributePaid: 0, tributePaidGroup: 0 };
+// ★Z-Pointの初期残高は15000Zに設定されています
+let state = { names: { user: "", ai: "", bf: "" }, firstPerson: "僕", aiFirstPerson: "私", userIcon: defaultUserIcon, aiIcon: defaultAiIcon, bfIcon: bfIcon, storyStep: 0, messages: { hina: [], group: [], bf: [] }, unread: { hina: 0, group: 0, bf: 0 }, isInvited: false, isJoined: false, isBfUnlocked: false, zpointBalance: 15000, zpointHistory: [], tributePaid: 0, tributePaidGroup: 0 };
 
 let isAutoMode = true;
 
@@ -484,7 +484,7 @@ window.onload = async () => {
             bf: (savedState.messages && savedState.messages.bf) ? savedState.messages.bf : []
         },
         unread: savedState.unread || { hina: 0, group: 0, bf: 0 },
-        zpayHistory: savedState.zpayHistory || []
+        zpointHistory: savedState.zpointHistory || []
       };
       isFirstTime = false;
       document.getElementById('setup-screen').style.display = 'none';
@@ -570,8 +570,8 @@ window.startEpisode = (isRestart) => {
         state.isInvited = false;
         state.isJoined = false;
         state.isBfUnlocked = false;
-        state.zpayBalance = 15000;
-        state.zpayHistory = [{ type: 'charge', amount: 15000, desc: '初期残高', date: getTime() }];
+        state.zpointBalance = 15000;
+        state.zpointHistory = [{ type: 'charge', amount: 15000, desc: '初期残高', date: getTime() }];
         state.tributePaid = 0;
         state.tributePaidGroup = 0;
         
@@ -585,40 +585,40 @@ window.startEpisode = (isRestart) => {
     openSNS();
 };
 
-window.openZPayHistory = () => { 
-  document.getElementById('zpay-home').style.display = 'none'; 
-  document.getElementById('zpay-history').style.display = 'flex'; 
-  const list = document.getElementById('zpay-history-list'); 
-  if(state.zpayHistory.length === 0) { 
+window.openZPointHistory = () => { 
+  document.getElementById('zpoint-home').style.display = 'none'; 
+  document.getElementById('zpoint-history').style.display = 'flex'; 
+  const list = document.getElementById('zpoint-history-list'); 
+  if(state.zpointHistory.length === 0) { 
     list.innerHTML = `<p style="text-align:center; color:#888; margin-top:20px;">履歴がありません</p>`; return; 
   } 
-  list.innerHTML = state.zpayHistory.slice().reverse().map(h => 
+  list.innerHTML = state.zpointHistory.slice().reverse().map(h => 
     `<div class="history-item"><div class="history-info"><span class="history-title">${escapeHTML(h.desc)}</span><span class="history-date">${h.date}</span></div><span class="history-amount ${h.type === 'charge' ? 'plus' : 'minus'}">${h.type === 'charge' ? '+' : '-'}${h.amount.toLocaleString()} Z</span></div>`
   ).join(''); 
 };
 
-window.openZPay = () => { document.getElementById('zpay-balance-display').innerText = state.zpayBalance.toLocaleString(); document.getElementById('zpay-home').style.display = 'flex'; document.getElementById('zpay-send').style.display = 'none'; document.getElementById('zpay-history').style.display = 'none'; document.getElementById('zpay-screen').style.display = 'flex'; };
-window.closeZPay = () => { document.getElementById('zpay-screen').style.display = 'none'; };
+window.openZPoint = () => { document.getElementById('zpoint-balance-display').innerText = state.zpointBalance.toLocaleString(); document.getElementById('zpoint-home').style.display = 'flex'; document.getElementById('zpoint-send').style.display = 'none'; document.getElementById('zpoint-history').style.display = 'none'; document.getElementById('zpoint-screen').style.display = 'flex'; };
+window.closeZPoint = () => { document.getElementById('zpoint-screen').style.display = 'none'; };
 
-window.openZPaySend = () => {
-  document.getElementById('zpay-home').style.display = 'none';
-  document.getElementById('zpay-send').style.display = 'flex';
-  const sel = document.getElementById('zpay-recipient-select');
+window.openZPointSend = () => {
+  document.getElementById('zpoint-home').style.display = 'none';
+  document.getElementById('zpoint-send').style.display = 'flex';
+  const sel = document.getElementById('zpoint-recipient-select');
   sel.innerHTML = `<option value="hina">${escapeHTML(state.names.ai)}</option><option value="bf">${escapeHTML(state.names.bf)}</option><option value="group">グループ</option>`;
   sel.value = currentRoom;
 };
 
 window.executeSend = () => {
-  const amount = parseInt(document.getElementById('zpay-amount-input').value);
+  const amount = parseInt(document.getElementById('zpoint-amount-input').value);
   if(isNaN(amount) || amount <= 0) return showToast("正しい数値を入力してください", true);
-  if(amount > state.zpayBalance) return showToast("残高が不足しています", true);
-  const targetRoom = document.getElementById('zpay-recipient-select').value;
+  if(amount > state.zpointBalance) return showToast("残高が不足しています", true);
+  const targetRoom = document.getElementById('zpoint-recipient-select').value;
   let targetName = targetRoom === 'hina' ? state.names.ai : (targetRoom === 'bf' ? state.names.bf : "グループ");
   
-  state.zpayBalance -= amount;
-  state.zpayHistory.push({ type: 'send', amount: amount, desc: `${targetName} 宛にプレゼント`, date: getTime() });
+  state.zpointBalance -= amount;
+  state.zpointHistory.push({ type: 'send', amount: amount, desc: `${targetName} 宛にプレゼント`, date: getTime() });
   showToast(`${amount.toLocaleString()} Z をプレゼントしました`);
-  document.getElementById('zpay-amount-input').value = ""; closeZPay();
+  document.getElementById('zpoint-amount-input').value = ""; closeZPoint();
 
   state.messages[targetRoom].push({ role:'user', name:state.names.user, amount: amount, isPayment: true, time:getTime() });
   if(currentRoom === targetRoom) render(); save();
@@ -804,7 +804,7 @@ startBtn.onclick = () => {
       isEditingSetup = false;
       startEpisode(true);
   } else {
-      state.zpayHistory.push({ type: 'charge', amount: 15000, desc: '初期残高', date: getTime() }); 
+      state.zpointHistory.push({ type: 'charge', amount: 15000, desc: '初期残高', date: getTime() }); 
       save(); 
       episodeScreen.style.display = 'flex'; 
   }
