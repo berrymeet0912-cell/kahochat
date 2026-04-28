@@ -243,18 +243,17 @@
 
     .badge { position: absolute; top: -5px; right: -5px; background: #ff3b30 !important; color: white !important; font-size: 11px; font-weight: bold; border-radius: 50px; min-width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; padding: 0 4px; border: 2px solid #111; z-index: 10; box-shadow: 0 2px 4px rgba(255, 59, 48, 0.4); }
 
-    /* エピソード進行度バーのスタイル */
+    /* エピソード進行度バーのスタイル (サイドバー下部配置用) */
     #progress-container {
-      position: absolute;
-      left: 15px;
-      bottom: 80px;
-      width: 140px;
+      margin-top: auto;
+      margin-bottom: 20px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 85%;
       background: rgba(20, 20, 20, 0.85);
       border-radius: 8px;
       padding: 10px;
-      z-index: 50; 
       border: 1px solid #444;
-      backdrop-filter: blur(4px);
       display: flex;
       flex-direction: column;
       gap: 5px;
@@ -282,9 +281,18 @@
     }
     @media (max-width: 480px) {
       #progress-container {
-        bottom: 70px;
-        left: 10px;
-        width: 120px;
+        width: 90%;
+        padding: 6px 4px;
+        margin-bottom: 15px;
+      }
+      .progress-label {
+        font-size: 9px;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+      }
+      .progress-label span:first-child {
+        font-size: 8px;
       }
     }
   </style>
@@ -460,6 +468,17 @@
         <div class="chat-item hidden" id="list-bf" onclick="switchRoom('bf')"><div class="icon-container"><img id="list-icon-bf" src="" class="list-icon"><div class="badge" id="badge-bf" style="display:none">0</div></div><div class="list-content"><div class="list-top"><span class="list-name" id="display-bf-name"></span><span id="list-time-bf" class="list-time"></span></div><div class="list-bottom"><span id="list-preview-bf" class="list-preview"></span></div></div></div>
         <div class="chat-item hidden" id="list-group" onclick="switchRoom('group')"><div class="icon-container"><div class="group-icon-stack"><img id="stack-icon-ai" src="" class="list-icon stack-1"><img id="stack-icon-bf" src="" class="list-icon stack-2"></div><div class="badge" id="badge-group" style="display:none">0</div></div><div class="list-content"><div class="list-top"><span class="list-name">グループ</span><span id="list-time-group" class="list-time"></span></div><div class="list-bottom"><span id="list-preview-group" class="list-preview">招待されています</span></div></div></div>
       </div>
+      
+      <div id="progress-container">
+        <div class="progress-label">
+          <span>進行度</span>
+          <span id="progress-text">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div id="progress-bar-fill" class="progress-bar-fill"></div>
+        </div>
+      </div>
+      
     </div>
 
     <div class="main-content">
@@ -473,16 +492,6 @@
         <button id="plus-btn" class="plus-btn" onclick="openZPoint()">＋</button>
         <input type="text" id="message-input" placeholder="メッセージ...">
         <button id="send-btn">送信</button>
-      </div>
-
-      <div id="progress-container">
-        <div class="progress-label">
-          <span>進行度</span>
-          <span id="progress-text">0%</span>
-        </div>
-        <div class="progress-bar-bg">
-          <div id="progress-bar-fill" class="progress-bar-fill"></div>
-        </div>
       </div>
 
     </div>
