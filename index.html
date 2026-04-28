@@ -97,7 +97,7 @@
     .primary-btn:disabled { background: #555; cursor: not-allowed; }
     .hidden { display: none !important; }
     
-    /* SNSのスタイル変更（テキストベースへ） */
+    /* SNSのスタイル変更 */
     .sns-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 500; overflow-y: auto; display: flex; flex-direction: column; }
     .sns-header { padding: 15px; font-weight: bold; text-align: center; border-bottom: 1px solid #222; position: sticky; top: 0; background: rgba(0,0,0,0.95); z-index: 10; display: flex; justify-content: center; align-items: center; }
     .sns-close-btn { position: absolute; right: 15px; background: none; border: none; color: white; font-size: 22px; cursor: pointer; padding: 5px; }
@@ -1157,7 +1157,7 @@ function aiReply(stepKey) {
     }
 
     else if(currentRoom === 'bf') { res.name = state.names.bf; res.role = 'bf'; res.icon = state.bfIcon; res.text = `直接LINEしてくんな。用があるならグループで言えやｗ`; }
-    else { res.text = "返事遅いんだけど？"; }
+    else { res.text = "負け組がうるさーい笑"; }
 
     state.messages[currentRoom].push(res); render(); triggerEffects(res.name, res.text, false);
     isProcessing = false; updateSidebarDisplay(); save(); checkUIState();
